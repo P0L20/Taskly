@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const settingsSchema = new mongoose.Schema(
   {
@@ -38,4 +38,6 @@ settingsSchema.statics.getSingleton = async function () {
   return settings;
 };
 
-module.exports = mongoose.model('Settings', settingsSchema);
+const Settings = mongoose.model("Settings", settingsSchema)
+
+export default Settings
