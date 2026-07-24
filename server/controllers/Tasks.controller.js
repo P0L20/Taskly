@@ -1,8 +1,8 @@
-import Task from "../models/Task";
+import Task from "../models/Task.js";
 
 // GET /api/tasks
 // Supports optional query filters: ?status=&projectId=&from=&to=
-exports.getTasks = async (req, res, next) => {
+export const getTasks = async (req, res, next) => {
   try {
     const { status, projectId, from, to } = req.query;
     const filter = {};
@@ -24,7 +24,7 @@ exports.getTasks = async (req, res, next) => {
 };
 
 // GET /api/tasks/:id
-exports.getTaskById = async (req, res, next) => {
+export const getTaskById = async (req, res, next) => {
   try {
     const task = await Task.findById(req.params.id);
     if (!task) {
@@ -37,7 +37,7 @@ exports.getTaskById = async (req, res, next) => {
 };
 
 // POST /api/tasks
-exports.createTask = async (req, res, next) => {
+export const createTask = async (req, res, next) => {
   try {
     const task = await Task.create(req.body);
     res.status(201).json(task);
@@ -47,7 +47,7 @@ exports.createTask = async (req, res, next) => {
 };
 
 // PUT /api/tasks/:id
-exports.updateTask = async (req, res, next) => {
+export const updateTask = async (req, res, next) => {
   try {
     const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
       new: true,           // return the updated document
@@ -63,7 +63,7 @@ exports.updateTask = async (req, res, next) => {
 };
 
 // DELETE /api/tasks/:id
-exports.deleteTask = async (req, res, next) => {
+export const deleteTask = async (req, res, next) => {
   try {
     const task = await Task.findByIdAndDelete(req.params.id);
     if (!task) {

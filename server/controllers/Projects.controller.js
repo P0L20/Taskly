@@ -1,8 +1,8 @@
-import Project from "../models/Project";
-import Task from "../models/Task";
+import Project from "../models/Project.js";
+import Task from "../models/Task.js";
 
 // GET /api/projects
-exports.getProjects = async (req, res, next) => {
+export const getProjects = async (req, res, next) => {
   try {
     const projects = await Project.find().sort({ createdAt: -1 });
     res.json(projects);
@@ -12,7 +12,7 @@ exports.getProjects = async (req, res, next) => {
 };
 
 // GET /api/projects/:id
-exports.getProjectById = async (req, res, next) => {
+export const getProjectById = async (req, res, next) => {
   try {
     const project = await Project.findById(req.params.id);
     if (!project) {
@@ -25,7 +25,7 @@ exports.getProjectById = async (req, res, next) => {
 };
 
 // GET /api/projects/:id/tasks
-exports.getProjectTasks = async (req, res, next) => {
+export const getProjectTasks = async (req, res, next) => {
   try {
     const project = await Project.findById(req.params.id);
     if (!project) {
@@ -39,7 +39,7 @@ exports.getProjectTasks = async (req, res, next) => {
 };
 
 // POST /api/projects
-exports.createProject = async (req, res, next) => {
+export const createProject = async (req, res, next) => {
   try {
     const project = await Project.create(req.body);
     res.status(201).json(project);
@@ -49,7 +49,7 @@ exports.createProject = async (req, res, next) => {
 };
 
 // PUT /api/projects/:id
-exports.updateProject = async (req, res, next) => {
+export const updateProject = async (req, res, next) => {
   try {
     const project = await Project.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -69,7 +69,7 @@ exports.updateProject = async (req, res, next) => {
 // so you never lose task data just because a project was removed.
 // If you'd rather cascade-delete instead, swap the updateMany for
 // Task.deleteMany({ projectId: req.params.id }).
-exports.deleteProject = async (req, res, next) => {
+export const deleteProject = async (req, res, next) => {
   try {
     const project = await Project.findByIdAndDelete(req.params.id);
     if (!project) {

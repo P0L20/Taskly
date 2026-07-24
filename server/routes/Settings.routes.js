@@ -1,8 +1,8 @@
-import {express} from 'express'
+import express from 'express'
 const router = express.Router();
-const { getSettings, updateSettings } = require('../controllers/settingsController');
+import { getSettings, updateSettings } from '../controllers/Settings.controller.js';
 
 router.get('/', getSettings);    // GET /api/settings
 router.put('/', updateSettings); // PUT /api/settings
 
-module.exports = router;
+export default router
