@@ -29,3 +29,21 @@ const startServer = async () => {
 };
 
 startServer();
+
+
+// const tasks = [
+//   { title: "Study", status: "pending" },
+//   { title: "Exercise", status: "completed" },
+//   { title: "Code", status: "pending" },
+// ];
+//                             // initial , value object
+// const groupedTask = tasks.reduce((groups, task) => {
+//   groups[task.status].push(task)
+//   return groups
+// }, {
+//   pending: [],
+//   "in-progress": [],
+//   completed: []
+// })
+
+// console.log(groupedTask)
