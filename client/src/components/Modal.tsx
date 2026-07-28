@@ -1,4 +1,3 @@
-// components/Modal.jsx
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 
@@ -18,11 +17,11 @@ export default function Modal({
   useEffect(() => {
     if (!isOpen) return;
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = "hidden"; // lock background scroll
+    document.body.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
@@ -50,6 +49,6 @@ export default function Modal({
         <div className="modal-body">{children}</div>
       </div>
     </div>,
-    document.getElementById("modal-root"),
+    document.getElementById("modal-root")!,
   );
 }

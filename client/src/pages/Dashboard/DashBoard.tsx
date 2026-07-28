@@ -1,5 +1,5 @@
-import { useTasks } from "../hooks/useTasks";
-import type { Task } from "../types/Types";
+import { useTasks } from "../../hooks/useTasks";
+import type { Task } from "../../types/Types";
 
 export default function Dashboard() {
   const { data: tasks, isLoading, isError } = useTasks();
