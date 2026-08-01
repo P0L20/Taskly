@@ -23,6 +23,27 @@ export const getTasks = async (req, res, next) => {
   }
 };
 
+export const getGroupedTask = async (req, res, next) => {
+  try {
+    const groupedTasks = await Task.aggregate([
+      {
+        $group: {
+          _id: "$status",
+          tasks: { $push: "$$ROOT" },
+        },
+      },
+    ]);
+
+    const result = Object.fromEntries(
+      groupedTasks.map(group => [group._id, group.tasks])
+    );
+
+    res.json(result);
+  } catch (e) {
+    next(e);
+  }
+};
+
 // GET /api/tasks/:id
 export const getTaskById = async (req, res, next) => {
   try {

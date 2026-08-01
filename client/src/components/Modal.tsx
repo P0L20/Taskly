@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
+import "../styles/Modal.css";
 
 type ModalProps = {
   isOpen: boolean;
@@ -38,12 +39,12 @@ export default function Modal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        onClick={(e) => e.stopPropagation()} // don't close when clicking inside
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="modal-header">
           <h2 id="modal-title">{title}</h2>
-          <button onClick={onClose} aria-label="Close">
-            ×
+          <button className="close-x-btn" onClick={onClose} aria-label="Close">
+            x
           </button>
         </div>
         <div className="modal-body">{children}</div>

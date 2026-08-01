@@ -5,7 +5,7 @@ import {
   FolderOpen,
   Settings,
 } from "lucide-react";
-import logo from "../assets/logo-expand.png";
+import logo from "../assets/logo-main.png";
 
 export default function SideBar() {
   const navBars = [
@@ -33,20 +33,25 @@ export default function SideBar() {
 
   return (
     <div className="nav-links-container sidebar">
-      <div className="top-section">
-        <div className="logo-wrapper">
-          <img className="logo" src={logo} alt="logo" />
+      <div className="top-wrapper">
+        <div className="top-section">
+          <div className="logo-wrapper">
+            <img className="logo" src={logo} alt="logo" />
+          </div>
+          <p>Taskly</p>
         </div>
+
+        <nav className="nav-links">
+          {navBars.map((bar) => (
+            <NavLink className="links" key={bar.to} to={bar.to}>
+              <span>{bar.icon}</span>
+              <span className="name-bar">{bar.name}</span>
+            </NavLink>
+          ))}
+        </nav>
       </div>
 
-      <nav className="nav-links">
-        {navBars.map((bar) => (
-          <NavLink className="links" key={bar.to} to={bar.to}>
-            <span>{bar.icon}</span>
-            <span className="name-bar">{bar.name}</span>
-          </NavLink>
-        ))}
-      </nav>
+      <div className="bottom-wrapper"></div>
     </div>
   );
 }

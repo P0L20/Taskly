@@ -1,5 +1,5 @@
 import Layout from "./Layout";
-import Dashboard from "./pages//Dashboard/DashBoard";
+import Dashboard from "./pages/Dashboard/Dashboard/DashBoard";
 import { Routes, Route, BrowserRouter } from "react-router";
 import Calendar from "./pages/Dashboard/Caledar";
 import Projects from "./pages/Dashboard/Projects";

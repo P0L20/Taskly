@@ -1,0 +1,7 @@
+.tasks-container {
+  display: flex;
+}
+
+.tasks-container .taskcard-container {
+  width: calc(100% / 3);
+}
