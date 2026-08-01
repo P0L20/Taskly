@@ -7,6 +7,9 @@ interface TaskCardProps {
 }
 
 const TaskCard = ({ task }: TaskCardProps): JSX.Element => {
+  const date = new Date(task.dueDate);
+  const formattedDate = date.toLocaleDateString();
+  console.log(formattedDate);
   return (
     <div className="taskcard-container">
       <div className="wrapper">
@@ -16,9 +19,8 @@ const TaskCard = ({ task }: TaskCardProps): JSX.Element => {
           <div className="description">{task.description}</div>
         </div>
         <div className="bottom-section">
-          <span>{task.priority}</span>
-          <p className="due">{task.dueDate}</p>
-          <span>{task.status}</span>
+          <p className="due">{formattedDate}</p>
+          <span className={task.priority}>{task.priority}</span>
         </div>
       </div>
     </div>

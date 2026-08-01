@@ -1,7 +1,59 @@
 .tasks-container {
   display: flex;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .tasks-container .taskcard-container {
-  width: calc(100% / 3);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
 }
+
+.taskcard-container .wrapper {
+  padding: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.taskcard-container .wrapper svg {
+  position: absolute;
+  right: 5px;
+}
+
+.taskcard-container .wrapper .name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.block-task .block-desc {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.block-task .block-desc .left-section {
+  display: flex;
+  gap: 10px;
+}
+
+.taskcard-container .wrapper .bottom-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.block-task {
+  background-color: var(--bg-card);
+  width: calc(100% / 3 - 20px);
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
