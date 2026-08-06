@@ -7,6 +7,7 @@
 .tasks-container .taskcard-container {
   border: 1px solid var(--border-color);
   border-radius: 10px;
+  cursor: grab;
 }
 
 .taskcard-container .wrapper {

@@ -1,13 +1,81 @@
 import { useDashboardTasks } from "../../../hooks/useTasks";
-import { Plus } from "lucide-react";
-import TaskCard from "./TaskCard";
 import "../../../styles/Dashboard.css";
+import TaskColumn from "./TaskColumn";
+import {
+  DndContext,
+  type DragStartEvent,
+  type DragOverEvent,
+  type DragEndEvent,
+  useSensors,
+  useSensor,
+  PointerSensor,
+  KeyboardSensor,
+} from "@dnd-kit/core";
+import { useUpdateTask } from "../../../hooks/useTasks";
+import { DragOverlay } from "@dnd-kit/core";
+import { useState } from "react";
+import { type Task } from "../../../types/Types";
+import TaskCard from "../Dashboard/TaskCard";
 
 export default function Dashboard() {
   const { data: tasks, isLoading, isError } = useDashboardTasks();
+  const [activeTask, setActiveTask] = useState<Task | null>(null);
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const allTasks = tasks ? Object.values(tasks).flat() : [];
+    const task = allTasks.find((t) => t._id === event.active.id);
+    setActiveTask(task ?? null);
+  };
+
+  const handleDragOver = (event: DragOverEvent) => {
+    const { active, over } = event;
+
+    if (!over) return;
+
+    console.log("Dragging", active.id, "over", over.id);
+  };
+
+  const updateTask = useUpdateTask();
+
+  const resolveTargetStatus = (overId: string): Task["status"] | undefined => {
+    const isColumnId = column.some((col) => col.name === overId);
+    if (isColumnId) return overId as Task["status"];
+
+    // over.id is a task id — find that task and use its current status
+    const allTasks = tasks ? Object.values(tasks).flat() : [];
+    return allTasks.find((t) => t._id === overId)?.status;
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    setActiveTask(null);
+    if (!over) return;
+
+    const taskId = active.id as string;
+    const newStatus = resolveTargetStatus(over.id as string);
+    const currentStatus = active.data.current?.status;
+
+    if (!newStatus || currentStatus === newStatus) return;
+
+    updateTask.mutate({ id: taskId, status: newStatus });
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor),
+  );
+
+  console.log(tasks?.done);
 
   if (isLoading) return <p>Loading…</p>;
   if (isError) return <p>Couldn't load tasks.</p>;
+  if (!tasks) return <p>No tasks found.</p>;
+
+  const column = [
+    { name: "todo", tasks: tasks.todo ?? [] },
+    { name: "in-progress", tasks: tasks["in-progress"] ?? [] },
+    { name: "done", tasks: tasks.done ?? [] },
+  ];
 
   return (
     <div className="main-wrapper">
@@ -16,48 +84,19 @@ export default function Dashboard() {
         <p className="intro">Good morning — here's what's happening today.</p>
       </div>
       <div className="tasks-container">
-        <div className="todo block-task">
-          <div className="block-desc">
-            <div className="left-section">
-              <p className="name">To-do</p>
-              <span>12</span>
-            </div>
-            <div className="right-section">
-              <Plus size={15} />
-            </div>
-          </div>
-          {tasks?.todo.map((task) => (
-            <TaskCard key={task._id} task={task} />
+        <DndContext
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+          sensors={sensors}
+        >
+          {column.map((col) => (
+            <TaskColumn key={col.name} name={col.name} tasks={col.tasks} />
           ))}
-        </div>
-        <div className="in-progress block-task">
-          <div className="block-desc">
-            <div className="left-section">
-              <p className="name">In-progress</p>
-              <span>8</span>
-            </div>
-            <div className="right-section">
-              <Plus size={15} />
-            </div>
-          </div>
-          {tasks?.["in-progress"].map((task) => (
-            <TaskCard key={task._id} task={task} />
-          ))}
-        </div>
-        <div className="done block-task">
-          <div className="block-desc">
-            <div className="left-section">
-              <p className="name">Done</p>
-              <span>10</span>
-            </div>
-            <div className="right-section">
-              <Plus size={15} />
-            </div>
-          </div>
-          {tasks?.done.map((task) => (
-            <TaskCard key={task._id} task={task} />
-          ))}
-        </div>
+          <DragOverlay>
+            {activeTask ? <TaskCard task={activeTask} /> : null}
+          </DragOverlay>
+        </DndContext>
       </div>
     </div>
   );
