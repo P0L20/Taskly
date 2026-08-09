@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import type { Task } from "../../../types/Types";
+import type { Task } from "../../types/Types";
 import { Ellipsis } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";

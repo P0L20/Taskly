@@ -1,8 +1,8 @@
 import Layout from "./Layout";
-import Dashboard from "./pages/Dashboard/Dashboard/DashBoard";
+import Dashboard from "./pages/Dashboard/DashBoard";
 import { Routes, Route, BrowserRouter } from "react-router";
 import Calendar from "./pages/Calendar/Caledar";
-import Projects from "./pages/Dashboard/Projects";
+import Projects from "./pages/Projects/Projects";
 import Settings from "./pages/Dashboard/Settings";
 
 function App() {

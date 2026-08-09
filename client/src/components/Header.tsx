@@ -2,10 +2,23 @@ import { PlusIcon, SearchIcon, User } from "lucide-react";
 import Modal from "./Modal";
 import { useState } from "react";
 import { useAddTask, type TaskInput } from "../hooks/useTasks";
+import { useProject } from "../hooks/useProject";
+import type { Project } from "../types/Types";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: addTask, isPending, isError, error } = useAddTask();
+  const { data: projects } = useProject();
+
+  type ProjectChoices = {
+    projId: string;
+    projName: string;
+  };
+  const projectChoices = projects?.map((project: Project) => {
+    return { projId: project._id, projName: project.name };
+  });
+
+  console.log(projectChoices);
 
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
@@ -15,6 +28,7 @@ export default function Header() {
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries()) as unknown as TaskInput;
 
+    console.log(data);
     // Trigger mutation to send data to the backend
     addTask(data, {
       onSuccess: () => {
@@ -94,6 +108,21 @@ export default function Header() {
                 <option value="high">High</option>
               </select>
             </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="projectId">Project Name</label>
+            <select
+              id="projectId"
+              name="projectId"
+              defaultValue="medium"
+              disabled={isPending}
+            >
+              <option value={undefined}>None</option>
+              {projectChoices?.map((proj: ProjectChoices) => (
+                <option value={proj.projId}>{proj.projName}</option>
+              ))}
+            </select>
           </div>
 
           {isError && (

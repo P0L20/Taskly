@@ -3,12 +3,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 export function useProject() {
   return useQuery({
     queryKey: ["projects"],
-    queryFn: () => {
+    queryFn: () =>
       fetch("http://localhost:3000/api/projects").then((res) => {
         if (!res.ok) throw new Error(`Failed to fetch projects: ${res.status}`);
         return res.json();
-      });
-    },
+      }),
   });
 }
 

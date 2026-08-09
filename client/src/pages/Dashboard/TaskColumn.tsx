@@ -1,4 +1,4 @@
-import type { Task } from "../../../types/Types";
+import type { Task } from "../../types/Types";
 import { Plus } from "lucide-react";
 import TaskCard from "./TaskCard";
 import {
@@ -22,8 +22,8 @@ export default function TaskColumn({ name, tasks }: ColumnProps) {
     <div className={`${name} block-task`} ref={setNodeRef}>
       <div className="block-desc">
         <div className="left-section">
-          <p className="name">To-do</p>
-          <span>12</span>
+          <p className="name">{name}</p>
+          <span>{tasks.length}</span>
         </div>
         <div className="right-section">
           <Plus size={15} />

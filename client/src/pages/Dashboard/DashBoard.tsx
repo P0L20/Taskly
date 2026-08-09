@@ -1,5 +1,5 @@
-import { useDashboardTasks } from "../../../hooks/useTasks";
-import "../../../styles/Dashboard.css";
+import { useTasksGroupedByStatus } from "../../hooks/useTasks";
+import "../../styles/Dashboard.css";
 import TaskColumn from "./TaskColumn";
 import {
   DndContext,
@@ -11,14 +11,14 @@ import {
   PointerSensor,
   KeyboardSensor,
 } from "@dnd-kit/core";
-import { useUpdateTask } from "../../../hooks/useTasks";
+import { useUpdateTask } from "../../hooks/useTasks";
 import { DragOverlay } from "@dnd-kit/core";
 import { useState } from "react";
-import { type Task } from "../../../types/Types";
+import { type Task } from "../../types/Types";
 import TaskCard from "../Dashboard/TaskCard";
 
 export default function Dashboard() {
-  const { data: tasks, isLoading, isError } = useDashboardTasks();
+  const { data: tasks, isLoading, isError } = useTasksGroupedByStatus();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
   const handleDragStart = (event: DragStartEvent) => {
@@ -65,7 +65,7 @@ export default function Dashboard() {
     useSensor(KeyboardSensor),
   );
 
-  console.log(tasks?.done);
+  // console.log(tasks?.done);
 
   if (isLoading) return <p>Loading…</p>;
   if (isError) return <p>Couldn't load tasks.</p>;

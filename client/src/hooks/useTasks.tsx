@@ -1,6 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Task } from "../types/Types";
 
+async function fetchTasks(): Promise<Task[]> {
+  const res = await fetch("http://localhost:3000/api/tasks");
+  if (!res.ok) throw new Error(`Failed to fetch tasks: ${res.status}`);
+  return res.json();
+}
+
 export function useTasks() {
   return useQuery({
     queryKey: ["tasks"],
@@ -18,15 +24,35 @@ type TaskGroups = {
   done: Task[];
 };
 
-export function useDashboardTasks() {
-  return useQuery<TaskGroups>({
-    queryKey: ["tasks", "grouped"],
-    queryFn: () =>
-      fetch("http://localhost:3000/api/tasks/groupedTask").then((res) => {
-        if (!res.ok)
-          throw new Error(`Failed to fetch grouped tasks: ${res.status}`);
-        return res.json() as Promise<TaskGroups>;
-      }),
+export function useTasksGroupedByStatus() {
+  return useQuery({
+    queryKey: ["tasks"],
+    queryFn: fetchTasks,
+    select: (tasks: Task[]) => ({
+      todo: tasks.filter((t) => t.status === "todo"),
+      "in-progress": tasks.filter((t) => t.status === "in-progress"),
+      done: tasks.filter((t) => t.status === "done"),
+    }),
+  });
+}
+
+export function useTasksGroupedByProject() {
+  return useQuery({
+    queryKey: ["tasks"],
+    queryFn: fetchTasks,
+    select: (tasks: Task[]) =>
+      tasks.reduce<Record<string, Task[]>>((acc, t) => {
+        const key = t.projectId ?? "unassigned";
+        (acc[key] ??= []).push(t);
+        return acc;
+      }, {}),
+  });
+}
+
+export function useProjectTasks() {
+  return useQuery({
+    queryKey: ["tasks", "grouped", "project"],
+    queryFn: () => fetch,
   });
 }
 
