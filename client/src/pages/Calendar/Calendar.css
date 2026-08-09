@@ -1,0 +1,169 @@
+/* react-big-calendar ships light-theme styles by default — this overrides
+   it to match the dark UI used across Dashboard/etc. Adjust the color
+   values below if your theme variables differ. */
+
+.calendar-legend {
+  display: flex;
+  gap: 20px;
+  margin: 12px 0 20px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.calendar-legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.calendar-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.calendar-container {
+  background: #14141c;
+  border: 1px solid #262633;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+/* --- react-big-calendar dark overrides --- */
+.rbc-calendar {
+  color: #e5e7eb;
+}
+
+.rbc-toolbar button {
+  color: #e5e7eb;
+  background: #1e1e2a;
+  border: 1px solid #303040;
+}
+
+.rbc-toolbar button:hover {
+  background: #2a2a3a;
+  color: #ffffff;
+}
+
+.rbc-toolbar button.rbc-active {
+  background: #4f46e5;
+  border-color: #4f46e5;
+  color: #ffffff;
+}
+
+.rbc-toolbar-label {
+  font-weight: 600;
+}
+
+.rbc-month-view,
+.rbc-time-view,
+.rbc-agenda-view {
+  border-color: #262633;
+}
+
+.rbc-header {
+  color: #9ca3af;
+  border-color: #262633;
+  padding: 8px 0;
+  font-weight: 500;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rbc-day-bg {
+  background: #14141c;
+  border-color: #262633;
+}
+
+.rbc-off-range-bg {
+  background: #0d0d13;
+}
+
+.rbc-off-range {
+  color: #4b5563;
+}
+
+.rbc-today {
+  background: #1f1f3a;
+}
+
+.rbc-date-cell {
+  color: #d1d5db;
+  padding: 4px 8px;
+  font-size: 13px;
+}
+
+.rbc-event {
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.rbc-event:focus {
+  outline: 2px solid #4f46e5;
+}
+
+.rbc-show-more {
+  color: #818cf8;
+  background: transparent;
+}
+
+.rbc-agenda-table {
+  color: #e5e7eb;
+}
+
+.rbc-agenda-table thead > tr > th {
+  border-bottom-color: #262633;
+  color: #9ca3af;
+}
+
+.rbc-agenda-table tbody > tr > td {
+  border-color: #262633;
+}
+
+/* --- task detail popover on event click --- */
+.task-popover-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.task-popover {
+  background: #1e1e2a;
+  border: 1px solid #303040;
+  border-radius: 10px;
+  padding: 20px;
+  width: 320px;
+  color: #e5e7eb;
+}
+
+.task-popover h3 {
+  margin: 0 0 8px;
+}
+
+.task-popover-meta {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #303040;
+  color: #e5e7eb;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.btn-secondary:hover {
+  background: #2a2a3a;
+}
