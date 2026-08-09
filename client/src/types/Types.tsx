@@ -11,6 +11,6 @@ export type Task = {
 export type Project = {
   _id: string;
   name: string;
-  descriptoin?: string;
+  description?: string;
   status: string;
 };
