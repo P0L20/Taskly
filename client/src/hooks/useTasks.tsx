@@ -63,6 +63,7 @@ export type TaskInput = {
   description?: string;
   dueDate?: string;
   priority: Priority;
+  projectId: string | null;
 };
 
 export function useAddTask() {

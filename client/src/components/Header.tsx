@@ -26,7 +26,13 @@ export default function Header() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries()) as unknown as TaskInput;
+
+    const rawData = Object.fromEntries(formData.entries());
+
+    const data: TaskInput = {
+      ...rawData,
+      projectId: rawData.projectId || null,
+    };
 
     console.log(data);
     // Trigger mutation to send data to the backend
@@ -118,7 +124,7 @@ export default function Header() {
               defaultValue="medium"
               disabled={isPending}
             >
-              <option value={undefined}>None</option>
+              <option value="">None</option>
               {projectChoices?.map((proj: ProjectChoices) => (
                 <option value={proj.projId}>{proj.projName}</option>
               ))}
