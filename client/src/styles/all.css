@@ -1,6 +1,6 @@
 :root {
   --bg-main: #0F0F16;
-  --bg-card: #13131a;
+  --bg-card: #181821;
   --bg-card-hover: #1a1a24;
   --border-color: #363642;
 
@@ -24,6 +24,10 @@
 
   --color-avatar-bg: #8b5cf6;
   --color-tag-purple-bg: #1e1b4b;
+
+  --color-todo: blue;
+  --color-progress: yellow;
+  --color-done: green;
 }
 
 * {

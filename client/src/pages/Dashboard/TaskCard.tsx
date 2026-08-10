@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import type { Task } from "../../types/Types";
-import { Ellipsis } from "lucide-react";
+import { CircleSmallIcon, Ellipsis } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -27,12 +27,12 @@ const TaskCard = ({ task }: TaskCardProps): JSX.Element => {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition: isDragging ? undefined : transition,
-    opacity: isDragging ? 0.4 : 1,
+    // opacity: isDragging ? 0.4 : 1,
   };
 
   return (
     <div
-      className="taskcard-container"
+      className={`taskcard-container ${task.status == "done" ? "task-done" : ""}`}
       ref={setNodeRef}
       style={style}
       {...attributes}
@@ -46,7 +46,9 @@ const TaskCard = ({ task }: TaskCardProps): JSX.Element => {
         </div>
         <div className="bottom-section">
           <p className="due">{formattedDate}</p>
-          <span className={task.priority}>{task.priority}</span>
+          <span className={`priority ${task.priority}`}>
+            {<CircleSmallIcon />}
+          </span>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import type { Task } from "../../types/Types";
-import { Plus } from "lucide-react";
+import { Plus, type LucideIcon } from "lucide-react";
 import TaskCard from "./TaskCard";
 import {
   SortableContext,
@@ -9,9 +9,10 @@ import { useDroppable } from "@dnd-kit/core";
 type ColumnProps = {
   name: string;
   tasks: Task[] | [];
+  Icon: LucideIcon;
 };
 
-export default function TaskColumn({ name, tasks }: ColumnProps) {
+export default function TaskColumn({ name, tasks, Icon }: ColumnProps) {
   const { setNodeRef } = useDroppable({
     id: name,
   });
@@ -22,8 +23,9 @@ export default function TaskColumn({ name, tasks }: ColumnProps) {
     <div className={`${name} block-task`} ref={setNodeRef}>
       <div className="block-desc">
         <div className="left-section">
+          <span className={`icon ${name}`}>{<Icon size={20} />}</span>
           <p className="name">{name}</p>
-          <span>{tasks.length}</span>
+          <span className={`length ${name}`}>{tasks.length}</span>
         </div>
         <div className="right-section">
           <Plus size={15} />

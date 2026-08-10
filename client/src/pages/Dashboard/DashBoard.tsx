@@ -1,5 +1,6 @@
 import { useTasksGroupedByStatus } from "../../hooks/useTasks";
-import "../../styles/Dashboard.css";
+import "./Dashboard.css";
+import { ListTodo, CircleCheckBig, Clock } from "lucide-react";
 import TaskColumn from "./TaskColumn";
 import {
   DndContext,
@@ -72,9 +73,9 @@ export default function Dashboard() {
   if (!tasks) return <p>No tasks found.</p>;
 
   const column = [
-    { name: "todo", tasks: tasks.todo ?? [] },
-    { name: "in-progress", tasks: tasks["in-progress"] ?? [] },
-    { name: "done", tasks: tasks.done ?? [] },
+    { name: "todo", icon: ListTodo, tasks: tasks.todo ?? [] },
+    { name: "in-progress", icon: Clock, tasks: tasks["in-progress"] ?? [] },
+    { name: "done", icon: CircleCheckBig, tasks: tasks.done ?? [] },
   ];
 
   return (
@@ -91,7 +92,12 @@ export default function Dashboard() {
           sensors={sensors}
         >
           {column.map((col) => (
-            <TaskColumn key={col.name} name={col.name} tasks={col.tasks} />
+            <TaskColumn
+              key={col.name}
+              name={col.name}
+              tasks={col.tasks}
+              Icon={col.icon}
+            />
           ))}
           <DragOverlay>
             {activeTask ? <TaskCard task={activeTask} /> : null}

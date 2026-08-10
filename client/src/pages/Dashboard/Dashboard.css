@@ -58,3 +58,55 @@
   gap: 10px;
 }
 
+.icon.todo {
+  color: var(--color-todo);
+}
+
+.icon.in-progress {
+  color: var(--color-progress);
+}
+
+.icon.done {
+  color: var(--color-done);
+}
+
+.length {
+  width: 20px;
+  height: 20px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.length.todo {
+  color: var(--color-todo);
+  background-color: rgba(57, 79, 188, 0.1);
+}
+
+.length.in-progress {
+  color: var(--color-progress);
+  background-color: rgba(216, 192, 38, 0.1);
+}
+
+.length.done {
+  color: var(--color-done);
+  background-color: rgba(36, 211, 83, 0.1);
+}
+
+.taskcard-container.task-done {
+  opacity: .5;
+}
+
+.priority.high {
+  color: rgb(131, 29, 29);
+}
+
+.priority.low {
+  color: gray;
+}
+
+.priority.medium {
+  color: yellow;
+}
