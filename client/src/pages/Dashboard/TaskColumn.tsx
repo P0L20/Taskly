@@ -28,7 +28,7 @@ export default function TaskColumn({ name, tasks, Icon }: ColumnProps) {
           <span className={`length ${name}`}>{tasks.length}</span>
         </div>
         <div className="right-section">
-          <Plus size={15} />
+          {name !== "done" ? <Plus size={15} /> : ""}
         </div>
       </div>
       <SortableContext

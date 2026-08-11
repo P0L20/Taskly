@@ -17,6 +17,7 @@ import { DragOverlay } from "@dnd-kit/core";
 import { useState } from "react";
 import { type Task } from "../../types/Types";
 import TaskCard from "../Dashboard/TaskCard";
+import Stat from "./Stat";
 
 export default function Dashboard() {
   const { data: tasks, isLoading, isError } = useTasksGroupedByStatus();
@@ -33,7 +34,7 @@ export default function Dashboard() {
 
     if (!over) return;
 
-    console.log("Dragging", active.id, "over", over.id);
+    // console.log("Dragging", active.id, "over", over.id);
   };
 
   const updateTask = useUpdateTask();
@@ -72,10 +73,27 @@ export default function Dashboard() {
   if (isError) return <p>Couldn't load tasks.</p>;
   if (!tasks) return <p>No tasks found.</p>;
 
+  console.log(tasks);
+
   const column = [
     { name: "todo", icon: ListTodo, tasks: tasks.todo ?? [] },
     { name: "in-progress", icon: Clock, tasks: tasks["in-progress"] ?? [] },
     { name: "done", icon: CircleCheckBig, tasks: tasks.done ?? [] },
+  ];
+
+  const legend = [
+    {
+      name: "low",
+      color: "#4b5563",
+    },
+    {
+      name: "medium",
+      color: "#d97706",
+    },
+    {
+      name: "high",
+      color: "#dc2626",
+    },
   ];
 
   return (
@@ -83,7 +101,18 @@ export default function Dashboard() {
       <div className="page-desc">
         <h1>Dashboard</h1>
         <p className="intro">Good morning — here's what's happening today.</p>
+        <div className="dashboard-legend">
+          {legend.map((legend) => (
+            <span key={legend.name} className="legend">
+              <i style={{ background: legend.color }}></i>
+              {legend.name}
+            </span>
+          ))}
+        </div>
       </div>
+
+      <Stat tasksGrouped={tasks} />
+
       <div className="tasks-container">
         <DndContext
           onDragStart={handleDragStart}

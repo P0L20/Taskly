@@ -43,7 +43,8 @@ export default function Projects() {
             <div className="project-wrapper">
               <div className="top-section">
                 <p className="project-name">{project.name}</p>
-                <p className="description">{project.description}</p>
+                <span className="done-in-progress">{}</span>
+                {/* <p className="description">{project.description}</p> */}
               </div>
 
               <div className="bottom-section">
@@ -56,7 +57,7 @@ export default function Projects() {
                   }
                   className="view-tasks"
                 >
-                  View
+                  View tasks
                 </button>
               </div>
             </div>

@@ -1,3 +1,24 @@
+.dashboard-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dashboard-legend {
+  display: flex;
+  gap: 20px;
+  margin: 12px 0 20px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.dashboard-legend span {
+   display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .tasks-container {
   display: flex;
   justify-content: space-between;
@@ -6,7 +27,7 @@
 
 .tasks-container .taskcard-container {
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: 20px;
   cursor: grab;
 }
 
@@ -50,7 +71,7 @@
   background-color: var(--bg-card);
   width: calc(100% / 3 - 20px);
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 20px;
   border: 1px solid var(--border-color);
 
   display: flex;
@@ -109,4 +130,77 @@
 
 .priority.medium {
   color: yellow;
+}
+
+/* stat design */
+
+.statistics-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.statistics-container .stat-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.stat-wrapper .stat-list {
+  border: 1px solid var(--border-color);
+  width: calc(100% / 4 - 20px);
+  padding: 25px 10px;
+  border-radius: 20px;
+  background-color: var(--bg-card);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stat-list .title {
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.stat-list .total {
+  color: white;
+}
+
+.stat-list .in-progress {
+  color: rgb(235, 163, 29);
+}
+
+.stat-list .completed {
+  color: rgb(104, 190, 104);
+}
+
+.stat-list .projects {
+  color: rgb(120, 23, 161);
+}
+
+.percentage-wrapper {
+  background-color: var(--bg-card);
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.percentage-wrapper .percent-bg {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  height: 12px;
+  border-radius: 10px;
+  display: flex;
+}
+
+.percentage-wrapper .top-section {
+  display: flex;
+  justify-content: space-between;
 }
