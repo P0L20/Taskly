@@ -13,11 +13,11 @@ type PropStat = {
 export default function Stat({ tasksGrouped }: PropStat) {
   const { data: tasks, isError, isLoading } = useTasks();
   const { data: project } = useProject();
-  console.log(tasksGrouped);
+  // console.log(tasksGrouped);
   if (isLoading) return;
   if (isError) return;
 
-  console.log(tasks);
+  // console.log(tasks);
 
   const stats = [
     { id: "total", title: "total tasks", num: tasks.length },
@@ -32,7 +32,7 @@ export default function Stat({ tasksGrouped }: PropStat) {
 
   const percent = `${((tasksGrouped.done.length / tasks.length) * 100).toFixed()}%`;
 
-  console.log(percent);
+  // console.log(percent);
 
   return (
     <div className="statistics-container">

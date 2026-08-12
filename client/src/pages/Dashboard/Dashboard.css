@@ -39,11 +39,6 @@
   gap: 15px;
 }
 
-.taskcard-container .wrapper svg {
-  position: absolute;
-  right: 5px;
-}
-
 .taskcard-container .wrapper .name {
   font-weight: 600;
   color: var(--text-primary);
@@ -203,4 +198,27 @@
 .percentage-wrapper .top-section {
   display: flex;
   justify-content: space-between;
+}
+
+.taskcard-container .edit-ell {
+  cursor: pointer;
+}
+
+.taskcard-container .wrapper button {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  right: 5px;
+}
+
+.taskcard-container .wrapper .edit {
+  color: white;
+}
+
+.taskcard-container.task-done .wrapper button {
+  pointer-events: none;
+  opacity: 0;
 }

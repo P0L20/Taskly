@@ -62,7 +62,7 @@ export type TaskInput = {
   title: string;
   description?: string;
   dueDate?: string;
-  priority: Priority;
+  priority: Priority | string;
   projectId: string | null;
 };
 

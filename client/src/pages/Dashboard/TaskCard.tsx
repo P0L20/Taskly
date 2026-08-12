@@ -3,6 +3,7 @@ import type { Task } from "../../types/Types";
 import { CircleSmallIcon, Ellipsis } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useTaskEdit } from "../../context/TaskEditContext";
 
 interface TaskCardProps {
   task: Task;
@@ -12,6 +13,8 @@ const TaskCard = ({ task }: TaskCardProps): JSX.Element => {
   const date = new Date(task.dueDate);
   const formattedDate = date.toLocaleDateString();
   // console.log(formattedDate);
+
+  const { openEdit } = useTaskEdit();
 
   const {
     attributes,
@@ -39,7 +42,12 @@ const TaskCard = ({ task }: TaskCardProps): JSX.Element => {
       {...listeners}
     >
       <div className="wrapper">
-        <Ellipsis size={20} />
+        <button
+          onClick={() => openEdit(task._id)}
+          onPointerDown={(e) => e.stopPropagation()}
+        >
+          <Ellipsis size={20} className="edit" />
+        </button>
         <div className="upper-section">
           <div className="name">{task.title}</div>
           <div className="description">{task.description}</div>

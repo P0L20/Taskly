@@ -18,6 +18,8 @@ import { useState } from "react";
 import { type Task } from "../../types/Types";
 import TaskCard from "../Dashboard/TaskCard";
 import Stat from "./Stat";
+import { TaskEditProvider } from "../../context/TaskEditContext";
+import { EditTaskModal } from "./EditTaskModal";
 
 export default function Dashboard() {
   const { data: tasks, isLoading, isError } = useTasksGroupedByStatus();
@@ -48,19 +50,16 @@ export default function Dashboard() {
     return allTasks.find((t) => t._id === overId)?.status;
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
-    setActiveTask(null);
     if (!over) return;
 
-    const taskId = active.id as string;
+    const activeData = active.data.current as { status?: string } | undefined;
     const newStatus = resolveTargetStatus(over.id as string);
-    const currentStatus = active.data.current?.status;
 
-    if (!newStatus || currentStatus === newStatus) return;
-
-    updateTask.mutate({ id: taskId, status: newStatus });
-  };
+    if (!newStatus || newStatus === activeData?.status) return;
+    updateTask.mutate({ id: active.id as string, status: newStatus });
+  }
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -73,7 +72,7 @@ export default function Dashboard() {
   if (isError) return <p>Couldn't load tasks.</p>;
   if (!tasks) return <p>No tasks found.</p>;
 
-  console.log(tasks);
+  //console.log(tasks);
 
   const column = [
     { name: "todo", icon: ListTodo, tasks: tasks.todo ?? [] },
@@ -114,24 +113,27 @@ export default function Dashboard() {
       <Stat tasksGrouped={tasks} />
 
       <div className="tasks-container">
-        <DndContext
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDragEnd={handleDragEnd}
-          sensors={sensors}
-        >
-          {column.map((col) => (
-            <TaskColumn
-              key={col.name}
-              name={col.name}
-              tasks={col.tasks}
-              Icon={col.icon}
-            />
-          ))}
-          <DragOverlay>
-            {activeTask ? <TaskCard task={activeTask} /> : null}
-          </DragOverlay>
-        </DndContext>
+        <TaskEditProvider>
+          <DndContext
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDragEnd={handleDragEnd}
+            sensors={sensors}
+          >
+            {column.map((col) => (
+              <TaskColumn
+                key={col.name}
+                name={col.name}
+                tasks={col.tasks}
+                Icon={col.icon}
+              />
+            ))}
+            <DragOverlay>
+              {activeTask ? <TaskCard task={activeTask} /> : null}
+            </DragOverlay>
+          </DndContext>
+          <EditTaskModal />
+        </TaskEditProvider>
       </div>
     </div>
   );
