@@ -1,7 +1,7 @@
 import Modal from "../../components/Modal";
 import { useTaskEdit } from "../../context/TaskEditContext";
 import { useProject } from "../../hooks/useProject";
-import { useUpdateTask } from "../../hooks/useTasks";
+import { useDeleteTask, useUpdateTask } from "../../hooks/useTasks";
 import type { Project, Task } from "../../types/Types";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -45,6 +45,12 @@ export function EditTaskModal() {
     );
   }
 
+  const deleteTask = useDeleteTask();
+
+  function handleDelete(id: string) {
+    if (!window.confirm("Delete this task? This can't be undone.")) return;
+    deleteTask.mutate(id, { onSuccess: closeEdit });
+  }
   return (
     <Modal
       isOpen={isOpen}
@@ -133,7 +139,12 @@ export function EditTaskModal() {
         )}
 
         <div className="modal-actions">
-          <button className="btn-delete">Delete</button>
+          <button
+            className="btn-delete"
+            onClick={() => handleDelete(task?._id)}
+          >
+            Delete
+          </button>
           <div className="right-btns">
             <button
               type="button"

@@ -153,3 +153,61 @@ export function useUpdateTask() {
     },
   });
 }
+
+export function useDeleteTask() {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    void,
+    Error,
+    string, // task id
+    { previousTasks?: Task[]; previousGrouped?: TaskGroups }
+  >({
+    mutationFn: (id) =>
+      fetch(`http://localhost:3000/api/tasks/${id}`, {
+        method: "DELETE",
+      }).then((res) => {
+        if (!res.ok) throw new Error(`Failed to delete task: ${res.status}`);
+      }),
+
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: ["tasks"] });
+
+      const previousTasks = queryClient.getQueryData<Task[]>(["tasks"]);
+      const previousGrouped = queryClient.getQueryData<TaskGroups>([
+        "tasks",
+        "grouped",
+      ]);
+
+      if (previousTasks) {
+        queryClient.setQueryData<Task[]>(["tasks"], (old) =>
+          old?.filter((t) => t._id !== id),
+        );
+      }
+
+      if (previousGrouped) {
+        queryClient.setQueryData<TaskGroups>(["tasks", "grouped"], (old) => {
+          if (!old) return old;
+          const next: TaskGroups = { todo: [], "in-progress": [], done: [] };
+          for (const key of Object.keys(old) as (keyof TaskGroups)[]) {
+            next[key] = old[key].filter((t) => t._id !== id);
+          }
+          return next;
+        });
+      }
+
+      return { previousTasks, previousGrouped };
+    },
+
+    onError: (_err, _id, context) => {
+      if (context?.previousTasks)
+        queryClient.setQueryData(["tasks"], context.previousTasks);
+      if (context?.previousGrouped)
+        queryClient.setQueryData(["tasks", "grouped"], context.previousGrouped);
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
+}
