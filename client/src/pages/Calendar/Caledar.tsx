@@ -14,6 +14,7 @@ import { useTasks } from "../../hooks/useTasks";
 import type { Task } from "../../types/Types";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./Calendar.css";
+import SelectedTask from "./SelectedTask";
 
 const locales = { "en-US": enUS };
 
@@ -39,7 +40,27 @@ export default function CalendarPage() {
   const { data: tasks, isLoading, isError } = useTasks();
   const [view, setView] = useState<View>("month");
   const [date, setDate] = useState(new Date());
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  // const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
+
+  const handleSelectSlot = ({ start }: { start: Date }) => {
+    if (!tasks) return;
+    const clickedDate = new Date(start);
+
+    const tasksForDay = tasks.filter((task: Task) => {
+      if (!task.dueDate) return false;
+      const taskDate = new Date(task.dueDate);
+      return (
+        taskDate.getFullYear() === clickedDate.getFullYear() &&
+        taskDate.getMonth() === clickedDate.getMonth() &&
+        taskDate.getDate() === clickedDate.getDate()
+      );
+    });
+
+    setSelectedDate(clickedDate);
+    setSelectedTasks(tasksForDay);
+  };
 
   const events: TaskEvent[] = useMemo(() => {
     if (!tasks) return [];
@@ -97,26 +118,38 @@ export default function CalendarPage() {
         </span>
       </div>
 
-      <div className="calendar-container">
-        <Calendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          view={view}
-          onView={setView}
-          date={date}
-          onNavigate={setDate}
-          eventPropGetter={eventPropGetter}
-          views={["month", "week", "agenda"]}
-          onSelectEvent={(event) =>
-            setSelectedTask((event as TaskEvent).resource)
-          }
-          style={{ height: 700 }}
-        />
+      <div className="calendar-layout">
+        <div className="calendar-container">
+          <Calendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            view={view}
+            onView={setView}
+            date={date}
+            onNavigate={setDate}
+            eventPropGetter={eventPropGetter}
+            views={["month", "week", "agenda"]}
+            selectable="ignoreEvents"
+            // onSelectEvent={(event) =>
+            //   setSelectedTask((event as TaskEvent).resource)
+            // }
+            onSelectSlot={handleSelectSlot}
+            style={{ height: 700 }}
+          />
+        </div>
+
+        {
+          <SelectedTask
+            selectedTasks={selectedTasks}
+            selectedDate={selectedDate}
+            setSelectedTasks={setSelectedTasks}
+          />
+        }
       </div>
 
-      {selectedTask && (
+      {/* {selectedTask && (
         <div
           className="task-popover-backdrop"
           onClick={() => setSelectedTask(null)}
@@ -138,7 +171,7 @@ export default function CalendarPage() {
             </button>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

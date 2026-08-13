@@ -36,7 +36,10 @@ export function EditTaskModal() {
         description: formData.get("description") as string,
         dueDate: formData.get("dueDate") as string,
         priority: formData.get("priority") as Task["priority"],
-        projectId: formData.get("projectId") as string,
+        projectId:
+          formData.get("projectId") == ""
+            ? null
+            : (formData.get("projectId") as string),
       },
       { onSuccess: closeEdit },
     );
@@ -130,21 +133,24 @@ export function EditTaskModal() {
         )}
 
         <div className="modal-actions">
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={closeEdit}
-            disabled={updateTask.isPending}
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="btn-primary"
-            disabled={updateTask.isPending}
-          >
-            {updateTask.isPending ? "Saving..." : "Save Changes"}
-          </button>
+          <button className="btn-delete">Delete</button>
+          <div className="right-btns">
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={closeEdit}
+              disabled={updateTask.isPending}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="btn-primary"
+              disabled={updateTask.isPending}
+            >
+              {updateTask.isPending ? "Saving..." : "Save Changes"}
+            </button>
+          </div>
         </div>
       </form>
     </Modal>
