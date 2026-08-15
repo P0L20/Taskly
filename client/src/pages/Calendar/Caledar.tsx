@@ -136,7 +136,19 @@ export default function CalendarPage() {
             //   setSelectedTask((event as TaskEvent).resource)
             // }
             onSelectSlot={handleSelectSlot}
-            style={{ height: 700 }}
+            style={{ height: 750 }}
+            dayPropGetter={(date) => {
+              if (
+                selectedDate &&
+                date.toDateString() === selectedDate.toDateString()
+              ) {
+                return {
+                  className: "selected-date",
+                };
+              }
+
+              return {};
+            }}
           />
         </div>
 

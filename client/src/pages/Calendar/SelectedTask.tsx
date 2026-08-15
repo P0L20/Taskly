@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useUpdateTask } from "../../hooks/useTasks";
 import type { Task } from "../../types/Types";
 import { Square, CheckSquare } from "lucide-react";

@@ -2,74 +2,120 @@ import { useState } from "react";
 import { useProject } from "../../hooks/useProject";
 import { useTasksGroupedByProject } from "../../hooks/useTasks";
 import type { Project, Task } from "../../types/Types";
+import { ChevronDown, ChevronUp, Square, CheckSquare } from "lucide-react";
+import { useUpdateTask } from "../../hooks/useTasks";
 import "./Project.css";
-import Modal from "../../components/Modal";
+import AddTask from "./AddTask";
+
+type ProjectGroupedTask = {
+  proj: Project;
+  tasks: Task[];
+  percentDone: number;
+};
 
 export default function Projects() {
   const { data: projects, isLoading, isError } = useProject();
   const { data: tasks } = useTasksGroupedByProject();
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalTitle, setModalTitle] = useState<string>("");
-  const [viewTask, setViewTask] = useState<Task[] | []>([]);
+  const [activeProjs, setActiveProjs] = useState<string[]>([]);
 
-  console.log(tasks);
-
-  const handleCloseTasks = () => {
-    setIsOpen(false);
+  const handleOpenProject = (id: string) => {
+    setActiveProjs((prev) =>
+      prev.includes(id)
+        ? prev.filter((buttonId) => buttonId !== id)
+        : [...prev, id],
+    );
   };
 
-  type Props = {
-    id: string;
-    name: string;
+  const updateTask = useUpdateTask();
+
+  const handleUpdateStatus = (id: string, currentStatus: Task["status"]) => {
+    const newStatus = currentStatus === "done" ? "todo" : "done";
+    updateTask.mutate({ id, status: newStatus });
   };
 
-  const handleOpenTasks = ({ id, name }: Props) => {
-    if (!tasks) return;
-    setIsOpen(true);
-    setModalTitle(name);
-    setViewTask(tasks[id]);
-    console.log(tasks[id]);
-  };
+  if (isLoading) return null;
+  if (isError) return null;
+  if (!projects || !tasks) return null;
 
-  if (isLoading) return;
-  if (isError) return;
-  console.log(tasks);
+  const groupedProjectTask: ProjectGroupedTask[] = projects.map(
+    (proj: Project) => {
+      const projectTasks = tasks[proj._id] ?? [];
+      const doneCount = projectTasks.filter((t) => t.status === "done").length;
+      return {
+        proj,
+        tasks: projectTasks,
+        percentDone:
+          projectTasks.length === 0
+            ? 0
+            : (doneCount / projectTasks.length) * 100,
+      };
+    },
+  );
 
   return (
     <>
+      <div className="top-section">
+        <button>Add new project</button>
+      </div>
       <ul className="project-list">
-        {projects.map((project: Project) => (
-          <li className="project-container">
+        {groupedProjectTask.map((project) => (
+          <li key={project.proj._id} className="project-container">
             <div className="project-wrapper">
-              <div className="top-section">
-                <p className="project-name">{project.name}</p>
-                <span className="done-in-progress">{}</span>
-                {/* <p className="description">{project.description}</p> */}
+              <div
+                className="top-section"
+                onClick={() => handleOpenProject(project.proj._id)}
+              >
+                <div className="top-wrapper">
+                  <p className="project-name">{project.proj.name}</p>
+                  {activeProjs.includes(project.proj._id) ? (
+                    <ChevronDown />
+                  ) : (
+                    <ChevronUp />
+                  )}
+                </div>
+                <div className="percent-wrapper">
+                  <div className="percentage">
+                    <div
+                      className="current"
+                      style={{
+                        backgroundColor: "var(--color-primary)",
+                        width: `${project.percentDone}%`,
+                        height: "100%",
+                      }}
+                    ></div>
+                  </div>
+                  <span>{Math.floor(project.percentDone)}%</span>
+                </div>
               </div>
 
               <div className="bottom-section">
-                <button
-                  onClick={() =>
-                    handleOpenTasks({
-                      id: project._id,
-                      name: project.name,
-                    })
-                  }
-                  className="view-tasks"
-                >
-                  View tasks
-                </button>
+                {activeProjs.includes(project.proj._id) && (
+                  <ul className="tasks-project">
+                    <div className="top-container">
+                      <p>TASKS</p>
+                      <AddTask project={project.proj} />
+                    </div>
+                    {project.tasks.map((task) => (
+                      <li key={task._id} className="task">
+                        <span
+                          className="update-status"
+                          onClick={() =>
+                            handleUpdateStatus(task._id, task.status)
+                          }
+                        >
+                          {task.status == "done" ? <CheckSquare /> : <Square />}
+                        </span>
+                        <p className="title">{task.title}</p>
+                        <p className="priority">{task.priority}</p>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           </li>
         ))}
       </ul>
-
-      <Modal isOpen={isOpen} onClose={handleCloseTasks} title={modalTitle}>
-        {viewTask?.map((task) => (
-          <p>{task.title}</p>
-        ))}
-      </Modal>
     </>
   );
 }

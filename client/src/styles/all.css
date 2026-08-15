@@ -48,6 +48,10 @@ body, html {
   height: 100vh;
 }
 
+ul {
+  list-style: none;
+}
+
 .sidebar {
   background: var(--bg-card);
   color: var(--text-primary);
