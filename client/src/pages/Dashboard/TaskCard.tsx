@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import type { Task } from "../../types/Types";
-import { CircleSmallIcon, Ellipsis } from "lucide-react";
+import { Ellipsis } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useTaskEdit } from "../../context/TaskEditContext";
@@ -54,9 +54,7 @@ const TaskCard = ({ task }: TaskCardProps): JSX.Element => {
         </div>
         <div className="bottom-section">
           <p className="due">{formattedDate}</p>
-          <span className={`priority ${task.priority}`}>
-            {<CircleSmallIcon />}
-          </span>
+          <span className={`priority ${task.priority}`}></span>
         </div>
       </div>
     </div>

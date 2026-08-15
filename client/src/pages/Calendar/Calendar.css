@@ -208,7 +208,10 @@
   font-size: 0.875rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
+  .calendar-container {
+    width: 100%;
+  }
   .calendar-layout {
     flex-direction: column;
   }

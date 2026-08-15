@@ -255,3 +255,22 @@ ul {
   border: 1px solid var(--color-primary-teal);
   opacity: .6;
 }
+
+
+.priority {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.priority.high {
+  background-color: rgb(220, 38, 38);
+}
+
+.priority.low {
+  background-color: rgb(75, 85, 99);
+}
+
+.priority.medium {
+  background-color: rgb(217, 119, 6);
+}

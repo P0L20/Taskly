@@ -2,10 +2,17 @@ import { useState } from "react";
 import { useProject } from "../../hooks/useProject";
 import { useTasksGroupedByProject } from "../../hooks/useTasks";
 import type { Project, Task } from "../../types/Types";
-import { ChevronDown, ChevronUp, Square, CheckSquare } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Square,
+  CheckSquare,
+  Ellipsis,
+} from "lucide-react";
 import { useUpdateTask } from "../../hooks/useTasks";
 import "./Project.css";
 import AddTask from "./AddTask";
+import { EditTaskModal } from "../../components/EditTaskModal";
 
 type ProjectGroupedTask = {
   proj: Project;
@@ -97,16 +104,29 @@ export default function Projects() {
                     </div>
                     {project.tasks.map((task) => (
                       <li key={task._id} className="task">
-                        <span
-                          className="update-status"
-                          onClick={() =>
-                            handleUpdateStatus(task._id, task.status)
-                          }
-                        >
-                          {task.status == "done" ? <CheckSquare /> : <Square />}
-                        </span>
-                        <p className="title">{task.title}</p>
-                        <p className="priority">{task.priority}</p>
+                        <div className="left-container">
+                          <span
+                            className="update-status"
+                            onClick={() =>
+                              handleUpdateStatus(task._id, task.status)
+                            }
+                          >
+                            {task.status == "done" ? (
+                              <CheckSquare color="var(--color-primary)" />
+                            ) : (
+                              <Square />
+                            )}
+                          </span>
+                          <p className="title">{task.title}</p>
+                        </div>
+                        <div className="right-container">
+                          <p className={`priority ${task.priority}`}></p>
+                          <div className="more-info">
+                            <p className="date">{task.dueDate.slice(5, 10)}</p>
+                            <Ellipsis className="ellipsis" size={15} />
+                            <EditTaskModal />
+                          </div>
+                        </div>
                       </li>
                     ))}
                   </ul>

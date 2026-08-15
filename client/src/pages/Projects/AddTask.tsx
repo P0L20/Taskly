@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Modal from "../../components/Modal";
 import { useAddTask, type TaskInput } from "../../hooks/useTasks";
+import { PlusIcon } from "lucide-react";
 
 export default function AddTask({ project }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +33,10 @@ export default function AddTask({ project }) {
 
   return (
     <>
-      <button onClick={() => setIsOpen(!isOpen)}>Add task</button>;
+      <button className="button-add" onClick={() => setIsOpen(!isOpen)}>
+        <PlusIcon size={12} />
+        <p>Add task</p>
+      </button>
       <Modal isOpen={isOpen} onClose={onClose} title="Add task">
         <form onSubmit={handleSubmit} className="modal-form">
           <div className="form-group">

@@ -19,7 +19,7 @@ import { type Task } from "../../types/Types";
 import TaskCard from "../Dashboard/TaskCard";
 import Stat from "./Stat";
 import { TaskEditProvider } from "../../context/TaskEditContext";
-import { EditTaskModal } from "./EditTaskModal";
+import { EditTaskModal } from "../../components/EditTaskModal";
 
 export default function Dashboard() {
   const { data: tasks, isLoading, isError } = useTasksGroupedByStatus();

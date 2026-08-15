@@ -1,8 +1,8 @@
-import Modal from "../../components/Modal";
-import { useTaskEdit } from "../../context/TaskEditContext";
-import { useProject } from "../../hooks/useProject";
-import { useDeleteTask, useUpdateTask } from "../../hooks/useTasks";
-import type { Project, Task } from "../../types/Types";
+import Modal from "./Modal";
+import { useTaskEdit } from "../context/TaskEditContext";
+import { useProject } from "../hooks/useProject";
+import { useDeleteTask, useUpdateTask } from "../hooks/useTasks";
+import type { Project, Task } from "../types/Types";
 import { useQueryClient } from "@tanstack/react-query";
 
 export function EditTaskModal() {

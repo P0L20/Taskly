@@ -25,7 +25,12 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  cursor: pointer;
+  transition: .3s ease;
+}
 
+.project-wrapper .top-section:hover {
+  opacity: .7;
 }
 
 .project-wrapper .bottom-section .tasks-project {
@@ -83,9 +88,63 @@
 .bottom-section .top-container {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.bottom-section .top-container .button-add {
+  background-color: transparent;
+  color: var(--color-primary);
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: .3s ease;
+}
+
+.bottom-section .top-container .button-add:hover {
+  opacity: .6;
 }
 
 .tasks-project .task {
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr;
+  grid-template-columns: 2fr 2fr;
+  transition: .3s ease;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.tasks-project .task:hover {
+  background-color: rgba(55, 51, 101, 0.127);
+}
+
+.tasks-project .update-status {
+  cursor: pointer;
+}
+
+.tasks-project .task :where(.right-container, .left-container) {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.task .right-container {
+  justify-content: right;
+}
+
+.task .right-container .more-info {
+  opacity: 0;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tasks-project .task:hover .more-info {
+  opacity: 1;
+}
+
+.tasks-project .more-info .ellipsis {
+  cursor: pointer;
 }

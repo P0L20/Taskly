@@ -54,7 +54,7 @@ export default function SelectedTask({
                   )}
                 </span>
                 <span className="title">{task.title}</span>
-                <span className={task.priority}>{task.priority}</span>
+                <span className={`priority ${task.priority}`}></span>
               </div>
             ))
           )}
