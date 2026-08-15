@@ -18,7 +18,6 @@ import { useState } from "react";
 import { type Task } from "../../types/Types";
 import TaskCard from "../Dashboard/TaskCard";
 import Stat from "./Stat";
-import { TaskEditProvider } from "../../context/TaskEditContext";
 import { EditTaskModal } from "../../components/EditTaskModal";
 
 export default function Dashboard() {
@@ -113,27 +112,25 @@ export default function Dashboard() {
       <Stat tasksGrouped={tasks} />
 
       <div className="tasks-container">
-        <TaskEditProvider>
-          <DndContext
-            onDragStart={handleDragStart}
-            onDragOver={handleDragOver}
-            onDragEnd={handleDragEnd}
-            sensors={sensors}
-          >
-            {column.map((col) => (
-              <TaskColumn
-                key={col.name}
-                name={col.name}
-                tasks={col.tasks}
-                Icon={col.icon}
-              />
-            ))}
-            <DragOverlay>
-              {activeTask ? <TaskCard task={activeTask} /> : null}
-            </DragOverlay>
-          </DndContext>
-          <EditTaskModal />
-        </TaskEditProvider>
+        <DndContext
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+          sensors={sensors}
+        >
+          {column.map((col) => (
+            <TaskColumn
+              key={col.name}
+              name={col.name}
+              tasks={col.tasks}
+              Icon={col.icon}
+            />
+          ))}
+          <DragOverlay>
+            {activeTask ? <TaskCard task={activeTask} /> : null}
+          </DragOverlay>
+        </DndContext>
+        <EditTaskModal />
       </div>
     </div>
   );

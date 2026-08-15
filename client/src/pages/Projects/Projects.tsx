@@ -13,6 +13,7 @@ import { useUpdateTask } from "../../hooks/useTasks";
 import "./Project.css";
 import AddTask from "./AddTask";
 import { EditTaskModal } from "../../components/EditTaskModal";
+import { useTaskEdit } from "../../context/TaskEditContext";
 
 type ProjectGroupedTask = {
   proj: Project;
@@ -24,6 +25,7 @@ export default function Projects() {
   const { data: projects, isLoading, isError } = useProject();
   const { data: tasks } = useTasksGroupedByProject();
   const [activeProjs, setActiveProjs] = useState<string[]>([]);
+  const { openEdit } = useTaskEdit();
 
   const handleOpenProject = (id: string) => {
     setActiveProjs((prev) =>
@@ -123,8 +125,11 @@ export default function Projects() {
                           <p className={`priority ${task.priority}`}></p>
                           <div className="more-info">
                             <p className="date">{task.dueDate.slice(5, 10)}</p>
-                            <Ellipsis className="ellipsis" size={15} />
-                            <EditTaskModal />
+                            <Ellipsis
+                              onClick={() => openEdit(task._id)}
+                              className="ellipsis"
+                              size={15}
+                            />
                           </div>
                         </div>
                       </li>
@@ -136,6 +141,7 @@ export default function Projects() {
           </li>
         ))}
       </ul>
+      <EditTaskModal />
     </>
   );
 }
