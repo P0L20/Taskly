@@ -5,7 +5,7 @@ import "../styles/Modal.css";
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
+  title?: string;
   children: React.ReactNode;
 };
 

@@ -1,15 +1,19 @@
 import Modal from "./Modal";
 import { useTaskEdit } from "../context/TaskEditContext";
 import { useProject } from "../hooks/useProject";
-import { useDeleteTask, useUpdateTask } from "../hooks/useTasks";
+import { useUpdateTask } from "../hooks/useTasks";
 import type { Project, Task } from "../types/Types";
 import { useQueryClient } from "@tanstack/react-query";
+import DeleteModal from "./DeleteModal";
+import { useState } from "react";
 
 export function EditTaskModal() {
   const { editingId, isOpen, closeEdit } = useTaskEdit();
   const { data: projects } = useProject();
   const updateTask = useUpdateTask();
   const queryClient = useQueryClient();
+  const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const [selectedTaskDelete, setSelectedTaskDelete] = useState<string[]>([]);
 
   type ProjectChoices = {
     projId: string;
@@ -52,142 +56,148 @@ export function EditTaskModal() {
     );
   }
 
-  const deleteTask = useDeleteTask();
-
-  function handleDelete(id: string) {
-    if (!window.confirm("Delete this task? This can't be undone.")) return;
-    deleteTask.mutate(id, { onSuccess: closeEdit });
+  function handleDelete(id: string[]) {
+    setIsOpenDelete(true);
+    setSelectedTaskDelete(id);
   }
+
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={closeEdit}
-      title="Edit Task"
-      key={editingId}
-    >
-      <form onSubmit={handleSubmit} className="modal-form">
-        <div className="form-group">
-          <label htmlFor="title">Task Title</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            defaultValue={task?.title}
-            required
-            autoFocus
-            disabled={updateTask.isPending}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="description">Description</label>
-          <textarea
-            id="description"
-            name="description"
-            rows={3}
-            defaultValue={task?.description}
-            disabled={updateTask.isPending}
-          />
-        </div>
-
-        <div className="form-row">
+    <>
+      <Modal
+        isOpen={isOpen}
+        onClose={closeEdit}
+        title="Edit Task"
+        key={editingId}
+      >
+        <form onSubmit={handleSubmit} className="modal-form">
           <div className="form-group">
-            <label htmlFor="dueDate">Due Date</label>
+            <label htmlFor="title">Task Title</label>
             <input
-              type="date"
-              id="dueDate"
-              name="dueDate"
-              defaultValue={task?.dueDate?.slice(0, 10)}
+              type="text"
+              id="title"
+              name="title"
+              defaultValue={task?.title}
               required
+              autoFocus
               disabled={updateTask.isPending}
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="priority">Priority</label>
-            <select
-              id="priority"
-              name="priority"
-              defaultValue={task?.priority ?? "medium"}
-              disabled={updateTask.isPending}
-            >
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-            </select>
-          </div>
-        </div>
 
-        <div className="form-row">
           <div className="form-group">
-            <label htmlFor="projectId">Project Name</label>
-            <select
-              id="projectId"
-              name="projectId"
-              defaultValue={task?.projectId ?? ""}
+            <label htmlFor="description">Description</label>
+            <textarea
+              id="description"
+              name="description"
+              rows={3}
+              defaultValue={task?.description}
               disabled={updateTask.isPending}
-            >
-              <option value="">None</option>
-              {projectChoices?.map((proj: ProjectChoices) => (
-                <option key={proj.projId} value={proj.projId}>
-                  {proj.projName}
-                </option>
-              ))}
-            </select>
+            />
           </div>
-          <div className="form-group">
-            <label htmlFor="status">Project Status</label>
-            <select
-              id="status"
-              name="status"
-              defaultValue={task?.status ?? ""}
-              disabled={updateTask.isPending}
-            >
-              {projectStatus?.map((status) => (
-                <option key={status.title} value={status.title}>
-                  {status.title}
-                </option>
-              ))}
-            </select>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="dueDate">Due Date</label>
+              <input
+                type="date"
+                id="dueDate"
+                name="dueDate"
+                defaultValue={task?.dueDate?.slice(0, 10)}
+                required
+                disabled={updateTask.isPending}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="priority">Priority</label>
+              <select
+                id="priority"
+                name="priority"
+                defaultValue={task?.priority ?? "medium"}
+                disabled={updateTask.isPending}
+              >
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
           </div>
-        </div>
 
-        {updateTask.isError && (
-          <p
-            style={{
-              color: "var(--color-error)",
-              fontSize: "var(--font-size-xs)",
-            }}
-          >
-            {updateTask.error?.message || "Failed to update task"}
-          </p>
-        )}
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="projectId">Project Name</label>
+              <select
+                id="projectId"
+                name="projectId"
+                defaultValue={task?.projectId ?? ""}
+                disabled={updateTask.isPending}
+              >
+                <option value="">None</option>
+                {projectChoices?.map((proj: ProjectChoices) => (
+                  <option key={proj.projId} value={proj.projId}>
+                    {proj.projName}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="status">Project Status</label>
+              <select
+                id="status"
+                name="status"
+                defaultValue={task?.status ?? ""}
+                disabled={updateTask.isPending}
+              >
+                {projectStatus?.map((status) => (
+                  <option key={status.title} value={status.title}>
+                    {status.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-        <div className="modal-actions">
-          <button
-            className="btn-delete"
-            onClick={() => handleDelete(task?._id)}
-          >
-            Delete
-          </button>
-          <div className="right-btns">
+          {updateTask.isError && (
+            <p
+              style={{
+                color: "var(--color-error)",
+                fontSize: "var(--font-size-xs)",
+              }}
+            >
+              {updateTask.error?.message || "Failed to update task"}
+            </p>
+          )}
+
+          <div className="modal-actions">
             <button
-              type="button"
-              className="btn-secondary"
-              onClick={closeEdit}
-              disabled={updateTask.isPending}
+              className="btn-delete"
+              onClick={() => handleDelete(task?._id)}
             >
-              Cancel
+              Delete
             </button>
-            <button
-              type="submit"
-              className="btn-primary"
-              disabled={updateTask.isPending}
-            >
-              {updateTask.isPending ? "Saving..." : "Save Changes"}
-            </button>
+            <div className="right-btns">
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={closeEdit}
+                disabled={updateTask.isPending}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn-primary"
+                disabled={updateTask.isPending}
+              >
+                {updateTask.isPending ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
-    </Modal>
+        </form>
+      </Modal>
+      <DeleteModal
+        isOpenDelete={isOpenDelete}
+        setIsOpenDelete={setIsOpenDelete}
+        selectedTaskDelete={selectedTaskDelete}
+      />
+    </>
   );
 }

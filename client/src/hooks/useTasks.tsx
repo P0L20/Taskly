@@ -154,25 +154,34 @@ export function useUpdateTask() {
   });
 }
 
-export function useDeleteTask() {
+export function useDeleteTasks() {
   const queryClient = useQueryClient();
 
   return useMutation<
     void,
     Error,
-    string, // task id
+    string[], // task ids — pass [id] for a single delete
     { previousTasks?: Task[]; previousGrouped?: TaskGroups }
   >({
-    mutationFn: (id) =>
-      fetch(`http://localhost:3000/api/tasks/${id}`, {
-        method: "DELETE",
-      }).then((res) => {
-        if (!res.ok) throw new Error(`Failed to delete task: ${res.status}`);
-      }),
+    mutationFn: async (ids) => {
+      const results = await Promise.all(
+        ids.map((id) =>
+          fetch(`http://localhost:3000/api/tasks/${id}`, {
+            method: "DELETE",
+          }),
+        ),
+      );
 
-    onMutate: async (id) => {
+      console.log(results);
+
+      const failed = results.find((res) => !res.ok);
+      if (failed) throw new Error(`Failed to delete task: ${failed.status}`);
+    },
+
+    onMutate: async (ids) => {
       await queryClient.cancelQueries({ queryKey: ["tasks"] });
 
+      const idSet = new Set(ids);
       const previousTasks = queryClient.getQueryData<Task[]>(["tasks"]);
       const previousGrouped = queryClient.getQueryData<TaskGroups>([
         "tasks",
@@ -181,7 +190,7 @@ export function useDeleteTask() {
 
       if (previousTasks) {
         queryClient.setQueryData<Task[]>(["tasks"], (old) =>
-          old?.filter((t) => t._id !== id),
+          old?.filter((t) => !idSet.has(t._id)),
         );
       }
 
@@ -190,7 +199,7 @@ export function useDeleteTask() {
           if (!old) return old;
           const next: TaskGroups = { todo: [], "in-progress": [], done: [] };
           for (const key of Object.keys(old) as (keyof TaskGroups)[]) {
-            next[key] = old[key].filter((t) => t._id !== id);
+            next[key] = old[key].filter((t) => !idSet.has(t._id));
           }
           return next;
         });
@@ -199,7 +208,7 @@ export function useDeleteTask() {
       return { previousTasks, previousGrouped };
     },
 
-    onError: (_err, _id, context) => {
+    onError: (_err, _ids, context) => {
       if (context?.previousTasks)
         queryClient.setQueryData(["tasks"], context.previousTasks);
       if (context?.previousGrouped)
