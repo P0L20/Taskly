@@ -13,4 +13,5 @@ export type Project = {
   name: string;
   description?: string;
   status: string;
+  color: string;
 };

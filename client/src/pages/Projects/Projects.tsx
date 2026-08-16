@@ -5,18 +5,16 @@ import type { Project, Task } from "../../types/Types";
 import {
   ChevronDown,
   ChevronUp,
-  Square,
-  CheckSquare,
   Ellipsis,
   Clock,
   Circle,
   CheckCircle,
 } from "lucide-react";
-import { useUpdateTask } from "../../hooks/useTasks";
 import "./Project.css";
 import AddTask from "./AddTask";
 import { EditTaskModal } from "../../components/EditTaskModal";
 import { useTaskEdit } from "../../context/TaskEditContext";
+import ProjectModal from "./AddProject";
 
 type ProjectGroupedTask = {
   proj: Project;
@@ -57,10 +55,12 @@ export default function Projects() {
     },
   );
 
+  console.log(groupedProjectTask);
+
   return (
-    <>
+    <div className="project-page">
       <div className="top-section">
-        <button>Add new project</button>
+        <ProjectModal />
       </div>
       <ul className="project-list">
         {groupedProjectTask.map((project) => (
@@ -83,13 +83,15 @@ export default function Projects() {
                     <div
                       className="current"
                       style={{
-                        backgroundColor: "var(--color-primary)",
+                        backgroundColor: `${project.proj.color}`,
                         width: `${project.percentDone}%`,
                         height: "100%",
                       }}
                     ></div>
                   </div>
-                  <span>{Math.floor(project.percentDone)}%</span>
+                  <span style={{ color: `${project.proj.color}` }}>
+                    {Math.floor(project.percentDone)}%
+                  </span>
                 </div>
               </div>
 
@@ -135,6 +137,6 @@ export default function Projects() {
         ))}
       </ul>
       <EditTaskModal />
-    </>
+    </div>
   );
 }

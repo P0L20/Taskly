@@ -25,7 +25,7 @@
   --color-avatar-bg: #8b5cf6;
   --color-tag-purple-bg: #1e1b4b;
 
-  --color-todo: blue;
+  --color-todo: gray;
   --color-progress: yellow;
   --color-done: green;
 }
@@ -298,7 +298,7 @@ svg.done {
   margin: 0 0 12px;
   font-size: 1.05rem;
   font-weight: 600;
-  color: var(--color-text, #18181b);
+  color: var(--text-primary);
 }
 
 .delete-modal .task-list {
@@ -316,41 +316,15 @@ svg.done {
   padding: 8px 10px 8px 22px;
   font-size: 0.875rem;
   line-height: 1.3;
-  color: var(--color-text-secondary, #52525b);
-  background: var(--color-error-bg, #fef2f2);
   border-radius: 6px;
   overflow: hidden;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  transition: .3s ease;
 }
 
-/* small tick marking each item as "marked for removal" */
-.delete-modal .task-list p::before {
-  content: "";
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  width: 8px;
-  height: 2px;
-  margin-top: -1px;
-  background: var(--color-error, #dc2626);
-}
-
-/* strike the title through on hover — reinforces what "confirm" will do */
-.delete-modal .task-list p::after {
-  content: "";
-  position: absolute;
-  left: 22px;
-  right: 10px;
-  top: 50%;
-  height: 1px;
-  margin-top: -0.5px;
-  background: var(--color-error, #dc2626);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.2s ease;
-}
-
-.delete-modal .task-list p:hover::after {
-  transform: scaleX(1);
+.delete-modal .task-list p:hover {
+  background-color: rgba(55, 51, 101, 0.127);
 }
 
 .delete-modal .action-btn {
@@ -358,7 +332,7 @@ svg.done {
   justify-content: flex-end;
   gap: 10px;
   padding-top: 12px;
-  border-top: 1px solid var(--color-border, #e4e4e7);
+  border-top: 1px solid var(--border-color);
 }
 
 .delete-modal .action-btn button {
@@ -381,33 +355,22 @@ svg.done {
 }
 
 .delete-modal .confirm {
-  background: var(--color-error, #dc2626);
+  background: var(--color-danger);
   color: #fff;
+  transition: .3s ease;
 }
 
-.delete-modal .confirm:hover:not(:disabled) {
-  background: var(--color-error-hover, #b91c1c);
+.delete-modal .confirm:hover {
+  opacity: .5;
 }
 
 .delete-modal .deny {
   background: transparent;
-  color: var(--color-text-secondary, #52525b);
-  border-color: var(--color-border, #e4e4e7);
+  color: var(--color-text-primary, #52525b);
+  border-color: var(--border-color);
+  transition: .3s ease;
 }
 
-.delete-modal .deny:hover:not(:disabled) {
-  background: var(--color-bg-hover, #f4f4f5);
-}
-
-.delete-modal .confirm:focus-visible,
-.delete-modal .deny:focus-visible {
-  outline: 2px solid var(--color-error, #dc2626);
-  outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .delete-modal .task-list p::after,
-  .delete-modal .action-btn button {
-    transition: none;
-  }
+.delete-modal .deny:hover {
+  background: #f4f4f5;
 }

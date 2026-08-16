@@ -18,12 +18,7 @@ const projectSchema = new mongoose.Schema(
       // simple hex color validation, e.g. #3B82F6
       match: [/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/, 'Color must be a valid hex code'],
       default: '#6366F1',
-    },
-    status: {
-      type: String,
-      enum: ['active', 'completed', 'archived'],
-      default: 'active',
-    },
+    }
   },
   {
     timestamps: true,

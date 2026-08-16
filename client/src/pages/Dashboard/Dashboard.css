@@ -205,3 +205,12 @@
 .taskcard-container .wrapper .edit {
   color: white;
 }
+
+.block-desc .delete-all-btn {
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+.block-desc .delete-all-btn:hover {
+  color: var(--color-danger);
+}

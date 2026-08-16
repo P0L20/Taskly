@@ -43,7 +43,11 @@ export default function TaskColumn({ name, tasks, Icon }: ColumnProps) {
             {name !== "done" ? (
               <Plus size={15} />
             ) : (
-              <Trash2Icon size={20} onClick={handleDeleteTaks} />
+              <Trash2Icon
+                className="delete-all-btn"
+                size={20}
+                onClick={handleDeleteTaks}
+              />
             )}
           </div>
         </div>

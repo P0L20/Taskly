@@ -7,12 +7,16 @@
 
 .project-list .project-container {
   padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .project-container .project-wrapper {
   height: fit-content;
   display: grid;
   grid-template-rows: 100px 1fr;
+  width: 90%;
 }
 
 .project-container .project-wrapper .top-section {
@@ -60,7 +64,7 @@
 .percentage {
   width: 100%;
   border: 1px solid var(--border-color);
-  height: 10px;
+  height: 4px;
   overflow: hidden;
   border-radius: 10px;
 }
@@ -147,4 +151,44 @@
 
 .tasks-project .more-info .ellipsis {
   cursor: pointer;
+}
+
+.project-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.project-page .top-section {
+  display: flex;
+  justify-content: end;
+}
+
+.top-section .new-proj-btn {
+  padding: 10px;
+  border-radius: 10px;
+  color: var(--text-primary);
+  background-color: var(--color-primary);
+  border: none;
+  cursor: pointer;
+  margin-right: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: .3s ease;
+}
+
+.top-section .new-proj-btn:hover {
+  opacity: .5;
+}
+
+.color-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-field .pick-color {
+  width: 45px;
+  height: 45px;
 }

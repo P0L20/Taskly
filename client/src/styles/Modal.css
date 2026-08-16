@@ -119,9 +119,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 /* Action Buttons */
 .modal-actions {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
   gap: 0.75rem;
   margin-top: 0.5rem;
+}
+
+.modal-actions .right-btns {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .btn-secondary {
@@ -153,4 +160,23 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .btn-primary:hover {
   background-color: var(--color-primary-light);
+}
+
+.right-btns :where(.btn-primary, .btn-secondary) {
+  height: 100%;
+}
+
+.modal-actions .btn-delete {
+  height: 100%;
+  background-color: var(--color-danger);
+  color: var(--text-primary);
+  padding: 0.625rem 1.25rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+.modal-actions .btn-delete:hover {
+  opacity: .5;
 }

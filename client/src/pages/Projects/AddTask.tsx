@@ -102,17 +102,24 @@ export default function AddTask({ project }) {
           )}
 
           <div className="modal-actions">
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={onClose}
-              disabled={isPending}
-            >
-              Cancel
-            </button>
-            <button type="submit" className="btn-primary" disabled={isPending}>
-              {isPending ? "Creating..." : "Create Task"}
-            </button>
+            <span></span>
+            <div className="right-btns">
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={onClose}
+                disabled={isPending}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn-primary"
+                disabled={isPending}
+              >
+                {isPending ? "Creating..." : "Create Task"}
+              </button>
+            </div>
           </div>
         </form>
       </Modal>
