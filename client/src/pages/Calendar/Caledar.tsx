@@ -40,27 +40,24 @@ export default function CalendarPage() {
   const { data: tasks, isLoading, isError } = useTasks();
   const [view, setView] = useState<View>("month");
   const [date, setDate] = useState(new Date());
-  // const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
 
   const handleSelectSlot = ({ start }: { start: Date }) => {
-    if (!tasks) return;
-    const clickedDate = new Date(start);
+    setSelectedDate(new Date(start));
+  };
 
-    const tasksForDay = tasks.filter((task: Task) => {
+  const selectedTasks = useMemo(() => {
+    if (!selectedDate || !tasks) return null;
+    return tasks.filter((task: Task) => {
       if (!task.dueDate) return false;
       const taskDate = new Date(task.dueDate);
       return (
-        taskDate.getFullYear() === clickedDate.getFullYear() &&
-        taskDate.getMonth() === clickedDate.getMonth() &&
-        taskDate.getDate() === clickedDate.getDate()
+        taskDate.getFullYear() === selectedDate.getFullYear() &&
+        taskDate.getMonth() === selectedDate.getMonth() &&
+        taskDate.getDate() === selectedDate.getDate()
       );
     });
-
-    setSelectedDate(clickedDate);
-    setSelectedTasks(tasksForDay);
-  };
+  }, [tasks, selectedDate]);
 
   const events: TaskEvent[] = useMemo(() => {
     if (!tasks) return [];
@@ -156,7 +153,6 @@ export default function CalendarPage() {
           <SelectedTask
             selectedTasks={selectedTasks}
             selectedDate={selectedDate}
-            setSelectedTasks={setSelectedTasks}
           />
         }
       </div>

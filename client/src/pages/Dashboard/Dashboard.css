@@ -205,8 +205,3 @@
 .taskcard-container .wrapper .edit {
   color: white;
 }
-
-.taskcard-container.task-done .wrapper button {
-  pointer-events: none;
-  opacity: 0;
-}

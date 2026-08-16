@@ -19,6 +19,12 @@ export function EditTaskModal() {
     return { projId: project._id, projName: project.name };
   });
 
+  const projectStatus = [
+    { title: "todo" },
+    { title: "in-progress" },
+    { title: "done" },
+  ];
+
   const task = editingId
     ? queryClient
         .getQueryData<Task[]>(["tasks"])
@@ -36,6 +42,7 @@ export function EditTaskModal() {
         description: formData.get("description") as string,
         dueDate: formData.get("dueDate") as string,
         priority: formData.get("priority") as Task["priority"],
+        status: formData.get("status") as string,
         projectId:
           formData.get("projectId") == ""
             ? null
@@ -110,21 +117,38 @@ export function EditTaskModal() {
           </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="projectId">Project Name</label>
-          <select
-            id="projectId"
-            name="projectId"
-            defaultValue={task?.projectId ?? ""}
-            disabled={updateTask.isPending}
-          >
-            <option value="">None</option>
-            {projectChoices?.map((proj: ProjectChoices) => (
-              <option key={proj.projId} value={proj.projId}>
-                {proj.projName}
-              </option>
-            ))}
-          </select>
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="projectId">Project Name</label>
+            <select
+              id="projectId"
+              name="projectId"
+              defaultValue={task?.projectId ?? ""}
+              disabled={updateTask.isPending}
+            >
+              <option value="">None</option>
+              {projectChoices?.map((proj: ProjectChoices) => (
+                <option key={proj.projId} value={proj.projId}>
+                  {proj.projName}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="status">Project Status</label>
+            <select
+              id="status"
+              name="status"
+              defaultValue={task?.status ?? ""}
+              disabled={updateTask.isPending}
+            >
+              {projectStatus?.map((status) => (
+                <option key={status.title} value={status.title}>
+                  {status.title}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {updateTask.isError && (

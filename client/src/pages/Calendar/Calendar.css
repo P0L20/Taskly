@@ -147,19 +147,26 @@
 
 .task-popover-meta {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  align-items: center;
   justify-content: space-around;
   margin: 12px 0;
   font-size: 13px;
   color: #9ca3af;
 }
 
-.task-popover-meta  .done-btn {
+.task-popover-meta .edit-btn {
+  opacity: 0;
   cursor: pointer;
+  transition: .3s ease;
 }
 
-.task-popover-meta  .done-btn:hover {
-  
+.task-popover-meta:hover .edit-btn {
+  opacity: 1;
+}
+
+.task-popover-meta  .done-btn {
+  cursor: pointer;
 }
 
 .btn-secondary {

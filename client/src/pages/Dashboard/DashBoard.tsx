@@ -71,7 +71,7 @@ export default function Dashboard() {
   if (isError) return <p>Couldn't load tasks.</p>;
   if (!tasks) return <p>No tasks found.</p>;
 
-  //console.log(tasks);
+  console.log(tasks);
 
   const column = [
     { name: "todo", icon: ListTodo, tasks: tasks.todo ?? [] },

@@ -274,3 +274,15 @@ ul {
 .priority.medium {
   background-color: rgb(217, 119, 6);
 }
+
+svg.todo {
+  color: var(--color-todo)
+}
+
+svg.in-progress {
+  color: var(--color-progress)
+}
+
+svg.done {
+  color: var(--color-done)
+}

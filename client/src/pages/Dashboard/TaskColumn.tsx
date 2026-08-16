@@ -1,5 +1,5 @@
 import type { Task } from "../../types/Types";
-import { Plus, type LucideIcon } from "lucide-react";
+import { Plus, Trash2Icon, type LucideIcon } from "lucide-react";
 import TaskCard from "./TaskCard";
 import {
   SortableContext,
@@ -28,7 +28,7 @@ export default function TaskColumn({ name, tasks, Icon }: ColumnProps) {
           <span className={`length ${name}`}>{tasks.length}</span>
         </div>
         <div className="right-section">
-          {name !== "done" ? <Plus size={15} /> : ""}
+          {name !== "done" ? <Plus size={15} /> : <Trash2Icon size={20} />}
         </div>
       </div>
       <SortableContext

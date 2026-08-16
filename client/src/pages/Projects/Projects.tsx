@@ -8,6 +8,9 @@ import {
   Square,
   CheckSquare,
   Ellipsis,
+  Clock,
+  Circle,
+  CheckCircle,
 } from "lucide-react";
 import { useUpdateTask } from "../../hooks/useTasks";
 import "./Project.css";
@@ -33,13 +36,6 @@ export default function Projects() {
         ? prev.filter((buttonId) => buttonId !== id)
         : [...prev, id],
     );
-  };
-
-  const updateTask = useUpdateTask();
-
-  const handleUpdateStatus = (id: string, currentStatus: Task["status"]) => {
-    const newStatus = currentStatus === "done" ? "todo" : "done";
-    updateTask.mutate({ id, status: newStatus });
   };
 
   if (isLoading) return null;
@@ -77,9 +73,9 @@ export default function Projects() {
                 <div className="top-wrapper">
                   <p className="project-name">{project.proj.name}</p>
                   {activeProjs.includes(project.proj._id) ? (
-                    <ChevronDown />
-                  ) : (
                     <ChevronUp />
+                  ) : (
+                    <ChevronDown />
                   )}
                 </div>
                 <div className="percent-wrapper">
@@ -107,16 +103,13 @@ export default function Projects() {
                     {project.tasks.map((task) => (
                       <li key={task._id} className="task">
                         <div className="left-container">
-                          <span
-                            className="update-status"
-                            onClick={() =>
-                              handleUpdateStatus(task._id, task.status)
-                            }
-                          >
+                          <span className="status">
                             {task.status == "done" ? (
-                              <CheckSquare color="var(--color-primary)" />
+                              <CheckCircle size={20} className="done" />
+                            ) : task.status == "todo" ? (
+                              <Circle size={20} className="todo" />
                             ) : (
-                              <Square />
+                              <Clock size={20} className="in-progress" />
                             )}
                           </span>
                           <p className="title">{task.title}</p>
