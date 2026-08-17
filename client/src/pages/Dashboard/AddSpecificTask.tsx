@@ -1,11 +1,11 @@
-import { PlusIcon, SearchIcon, User } from "lucide-react";
-import Modal from "./Modal";
+import { Plus } from "lucide-react";
+import Modal from "../../components/Modal";
 import { useState } from "react";
-import { useAddTask, type TaskInput } from "../hooks/useTasks";
-import { useProject } from "../hooks/useProject";
-import type { Project } from "../types/Types";
+import { useAddTask, type TaskInput } from "../../hooks/useTasks";
+import { useProject } from "../../hooks/useProject";
+import type { Project } from "../../types/Types";
 
-export default function Header() {
+export default function AddSpecificTask({ status }) {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: addTask, isPending, isError, error } = useAddTask();
   const { data: projects } = useProject();
@@ -18,11 +18,6 @@ export default function Header() {
     return { projId: project._id, projName: project.name };
   });
 
-  console.log(projectChoices);
-
-  const handleOpen = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -31,39 +26,26 @@ export default function Header() {
 
     const data: TaskInput = {
       ...rawData,
+      status,
       projectId: rawData.projectId || null,
     };
 
     console.log(data);
-    // Trigger mutation to send data to the backend
     addTask(data, {
       onSuccess: () => {
-        handleClose(); // Only close modal when creation succeeds
+        setIsOpen(false);
       },
     });
   };
 
-  return (
-    <div className="header">
-      <div className="header-wrapper">
-        <div className="left-section">
-          <SearchIcon size={15} strokeWidth={2} />
-          <input type="text" placeholder="Search tasks..." />
-        </div>
-        <div className="right-section">
-          <div className="add-wrapper">
-            <button className="add-btn" onClick={handleOpen}>
-              <PlusIcon size={15} strokeWidth={2} />
-              <span>New task</span>
-            </button>
-          </div>
-          <div className="profile-wrapper">
-            <User size={20} strokeWidth={2} />
-          </div>
-        </div>
-      </div>
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
 
-      <Modal isOpen={isOpen} onClose={handleClose} title="Add new Task">
+  return (
+    <>
+      <Plus size={15} onClick={() => handleOpen()} />
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Add task">
         <form onSubmit={handleSubmit} className="modal-form">
           <div className="form-group">
             <label htmlFor="title">Task Title</label>
@@ -148,7 +130,7 @@ export default function Header() {
             <button
               type="button"
               className="btn-secondary"
-              onClick={handleClose}
+              onClick={() => setIsOpen(false)}
               disabled={isPending}
             >
               Cancel
@@ -159,6 +141,6 @@ export default function Header() {
           </div>
         </form>
       </Modal>
-    </div>
+    </>
   );
 }

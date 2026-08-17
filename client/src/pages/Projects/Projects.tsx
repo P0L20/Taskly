@@ -15,17 +15,20 @@ import AddTask from "./AddTask";
 import { EditTaskModal } from "../../components/EditTaskModal";
 import { useTaskEdit } from "../../context/TaskEditContext";
 import ProjectModal from "./AddProject";
+import EditProject from "./EditProject";
 
 type ProjectGroupedTask = {
   proj: Project;
   tasks: Task[];
   percentDone: number;
+  doneCount: number;
 };
 
 export default function Projects() {
   const { data: projects, isLoading, isError } = useProject();
   const { data: tasks } = useTasksGroupedByProject();
   const [activeProjs, setActiveProjs] = useState<string[]>([]);
+  const [open, setOpen] = useState(false);
   const { openEdit } = useTaskEdit();
 
   const handleOpenProject = (id: string) => {
@@ -34,6 +37,7 @@ export default function Projects() {
         ? prev.filter((buttonId) => buttonId !== id)
         : [...prev, id],
     );
+    setOpen(true);
   };
 
   if (isLoading) return null;
@@ -51,6 +55,7 @@ export default function Projects() {
           projectTasks.length === 0
             ? 0
             : (doneCount / projectTasks.length) * 100,
+        doneCount: doneCount,
       };
     },
   );
@@ -68,15 +73,30 @@ export default function Projects() {
             <div className="project-wrapper">
               <div
                 className="top-section"
+                style={{
+                  ...(open &&
+                    activeProjs.includes(project.proj._id) && {
+                      borderBottomLeftRadius: 0,
+                      borderBottomRightRadius: 0,
+                    }),
+                }}
                 onClick={() => handleOpenProject(project.proj._id)}
               >
                 <div className="top-wrapper">
-                  <p className="project-name">{project.proj.name}</p>
-                  {activeProjs.includes(project.proj._id) ? (
-                    <ChevronUp />
-                  ) : (
-                    <ChevronDown />
-                  )}
+                  <div className="left-section">
+                    <p className="project-name">{project.proj.name}</p>
+                    <EditProject project={project.proj} />
+                  </div>
+                  <div className="right-section">
+                    <span>
+                      {project.doneCount} / {project.tasks.length} tasks
+                    </span>
+                    {activeProjs.includes(project.proj._id) ? (
+                      <ChevronUp size={15} />
+                    ) : (
+                      <ChevronDown size={15} />
+                    )}
+                  </div>
                 </div>
                 <div className="percent-wrapper">
                   <div className="percentage">
@@ -89,7 +109,9 @@ export default function Projects() {
                       }}
                     ></div>
                   </div>
-                  <span style={{ color: `${project.proj.color}` }}>
+                  <span
+                    style={{ color: `${project.proj.color}`, fontSize: "14px" }}
+                  >
                     {Math.floor(project.percentDone)}%
                   </span>
                 </div>

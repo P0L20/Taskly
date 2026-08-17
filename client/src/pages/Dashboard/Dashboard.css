@@ -29,6 +29,11 @@
   border: 1px solid var(--border-color);
   border-radius: 20px;
   cursor: grab;
+  transition: .3s ease;
+}
+
+.tasks-container .taskcard-container:hover {
+  opacity: .5;
 }
 
 .taskcard-container .wrapper {
@@ -55,6 +60,15 @@
 .block-task .block-desc .left-section {
   display: flex;
   gap: 10px;
+}
+
+.block-desc .lucide-plus {
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+.block-desc .lucide-plus:hover {
+  color: var(--color-primary);
 }
 
 .taskcard-container .wrapper .bottom-section {

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 :root {
   --bg-main: #0F0F16;
   --bg-card: #181821;
@@ -11,7 +13,7 @@
 
   --color-primary: #7c3aed;
   --color-primary-light: #9061f9;
-  --color-primary-bg: #231942;
+  --color-primary-bg: #221b37;
 
   --color-success: #10b981; 
   --color-success-bg: rgba(16, 185, 129, 0.15);
@@ -125,12 +127,12 @@ ul {
   align-items: center;
   justify-content: center;
 
-  padding: 5px;
+  padding: 10px;
   padding-left: 10px;
   border-radius: 10px;
   position: relative;
   overflow: hidden;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .nav-links a span {

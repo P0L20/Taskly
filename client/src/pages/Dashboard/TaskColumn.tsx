@@ -1,5 +1,5 @@
 import type { Task } from "../../types/Types";
-import { Plus, Trash2Icon, type LucideIcon } from "lucide-react";
+import { Trash2Icon, type LucideIcon } from "lucide-react";
 import TaskCard from "./TaskCard";
 import {
   SortableContext,
@@ -8,6 +8,7 @@ import {
 import { useDroppable } from "@dnd-kit/core";
 import DeleteModal from "../../components/DeleteModal";
 import { useState } from "react";
+import AddSpecificTask from "./AddSpecificTask";
 type ColumnProps = {
   name: string;
   tasks: Task[] | [];
@@ -41,7 +42,7 @@ export default function TaskColumn({ name, tasks, Icon }: ColumnProps) {
           </div>
           <div className="right-section">
             {name !== "done" ? (
-              <Plus size={15} />
+              <AddSpecificTask status={name} />
             ) : (
               <Trash2Icon
                 className="delete-all-btn"

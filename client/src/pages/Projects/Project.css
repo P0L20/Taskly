@@ -22,8 +22,9 @@
 .project-container .project-wrapper .top-section {
   border: 1px solid var(--border-color);
   background-color: var(--bg-card);
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  /* border-top-left-radius: 15px;
+  border-top-right-radius: 15px; */
+  border-radius: 15px;
   padding: 10px;
   height: 80px;
   display: flex;
@@ -34,7 +35,30 @@
 }
 
 .project-wrapper .top-section:hover {
-  opacity: .7;
+  background-color: var(--bg-card-hover);
+}
+
+.project-wrapper .top-section .left-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.project-wrapper .top-section .left-section .lucide-ellipsis {
+  opacity: 0;
+  transition: .3s ease;
+}
+
+.project-wrapper .top-section:hover  .lucide-ellipsis {
+  opacity: 1;
+}
+
+.project-wrapper .top-section .right-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-secondary);
 }
 
 .project-wrapper .bottom-section .tasks-project {

@@ -81,3 +81,16 @@ export const deleteProject = async (req, res, next) => {
     next(err);
   }
 };
+
+export const deleteProjectAndTasks = async (req, res, next) => {
+  try {
+    const project = await Project.findByIdAndDelete(req.params.id);
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+    await Task.deleteMany({ projectId: req.params.id });
+    res.json({ message: 'Project and its tasks were deleted', id: req.params.id });
+  } catch (err) {
+    next(err);
+  }
+};
