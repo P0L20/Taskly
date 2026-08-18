@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import {
   useDeleteProject,
   useDeleteProjectAndTasks,
@@ -37,10 +37,12 @@ export default function Popover({ project, tasks }: PopoverType) {
       </button>
       {isOpenPopover && (
         <div className="pop-over">
-          <p>What do you want to delete?</p>
-          <p className="close-x" onClick={close}>
-            x
-          </p>
+          <div className="top-section">
+            <p>What do you want to delete?</p>
+            <p className="close-x" onClick={close}>
+              x
+            </p>
+          </div>
 
           <div className="buttons">
             <button
@@ -51,7 +53,7 @@ export default function Popover({ project, tasks }: PopoverType) {
                 deleteProject.mutate(project._id, { onSuccess: close })
               }
             >
-              Delete project only
+              Delete project ONLY
             </button>
             <button
               type="button"
@@ -61,7 +63,7 @@ export default function Popover({ project, tasks }: PopoverType) {
                 deleteProjectAndTasks.mutate(project._id, { onSuccess: close })
               }
             >
-              Delete project and its tasks
+              Delete project AND its tasks
             </button>
           </div>
 
@@ -78,21 +80,25 @@ export default function Popover({ project, tasks }: PopoverType) {
 
           <div className="view-proj-task">
             <p>{project.name}</p>
-            <button
-              type="button"
-              className="dropdown-task-toggle"
-              onClick={() => setOpenTask((prev) => !prev)}
-            >
-              {tasks.length} task{tasks.length === 1 ? "" : "s"}
-              <ChevronDown size={14} className={openTask ? "open" : ""} />
-            </button>
-            {openTask && (
-              <div className="dropdown-task">
-                {tasks.map((task) => (
-                  <p key={task._id}>{task.title}</p>
-                ))}
-              </div>
-            )}
+            <div className="tasks-view">
+              <button
+                type="button"
+                className="dropdown-task-toggle"
+                onClick={() => setOpenTask((prev) => !prev)}
+              >
+                {tasks.length} task{tasks.length === 1 ? "" : "s"}
+                {openTask ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+              </button>
+              {openTask && (
+                <div className="dropdown-task">
+                  {tasks.map((task) => (
+                    <p className="task" key={task._id}>
+                      {task.title}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

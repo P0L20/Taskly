@@ -3,7 +3,7 @@
 :root {
   --bg-main: #0F0F16;
   --bg-card: #181821;
-  --bg-card-hover: #1a1a24;
+  --bg-card-hover: #272730;
   --border-color: #363642;
 
   --text-primary: #f1f1f5;
@@ -30,6 +30,11 @@
   --color-todo: gray;
   --color-progress: yellow;
   --color-done: green;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.25);
 }
 
 * {

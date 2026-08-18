@@ -36,6 +36,7 @@ const TaskCard = ({ task }: TaskCardProps): JSX.Element => {
   return (
     <div
       className={`taskcard-container ${task.status == "done" ? "task-done" : ""}`}
+      id={`task-${task._id}`}
       ref={setNodeRef}
       style={style}
       {...attributes}

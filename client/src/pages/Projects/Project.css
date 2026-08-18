@@ -264,3 +264,113 @@
   background: rgba(128, 128, 128, 0.08);
   border-radius: 10px;
 }
+
+.modal-actions {
+  position: relative;
+}
+
+.pop-over {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  position: absolute;
+  bottom: 100px;
+  left: 20%;
+  background-color: var(--bg-card);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  color: var(--text-primary);
+}
+
+.pop-over .top-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.pop-over .top-section .close-x {
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.pop-over .top-section .close-x:hover {
+  background-color: var(--bg-card-hover);
+}
+
+.pop-over .buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pop-over .buttons  button {
+  border-radius: 10px;
+  text-align: left;
+  padding: 5px 10px;
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+.pop-over .buttons  button:hover {
+  background-color: var(--color-danger);
+}
+
+.pop-over .buttons button:nth-child(2):hover {
+  background-color: rgb(236, 24, 24);
+}
+
+.pop-over .view-proj-task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pop-over .tasks-view {
+  position: relative;
+}
+
+.pop-over .tasks-view .dropdown-task {
+  position: absolute;
+  top: 40px;
+  background-color: var(--bg-card);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+}
+
+.pop-over .tasks-view .dropdown-task .task {
+  padding: 5px 10px;
+  transition: .3s ease;
+  border-radius: 10px;
+}
+
+.pop-over .tasks-view .dropdown-task .task:hover {
+  background-color: var(--bg-card-hover);
+}
+
+.pop-over .dropdown-task-toggle {
+  background-color: var(--bg-card);
+  padding: 2px 5px;
+  color: var(--text-primary);
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  transition: .3s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.pop-over .dropdown-task-toggle:hover {
+  background-color: var(--bg-card-hover);
+}

@@ -228,3 +228,22 @@
 .block-desc .delete-all-btn:hover {
   color: var(--color-danger);
 }
+
+.task-highlight {
+  animation: task-highlight-flash 2s ease;
+}
+
+@keyframes task-highlight-flash {
+  0%, 100% { background-color: transparent; }
+  20% { background-color: var(--color-highlight, #fef3c7); }
+}
+
+@media (max-width: 900px) {
+  .tasks-container {
+    flex-direction: column;
+  }
+
+  .block-task {
+    width: 100%;
+  }
+}

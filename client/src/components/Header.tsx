@@ -1,14 +1,39 @@
 import { PlusIcon, SearchIcon, User } from "lucide-react";
 import Modal from "./Modal";
 import { useState } from "react";
-import { useAddTask, type TaskInput } from "../hooks/useTasks";
+import { useAddTask, useTasks, type TaskInput } from "../hooks/useTasks";
 import { useProject } from "../hooks/useProject";
-import type { Project } from "../types/Types";
+import type { Project, Task } from "../types/Types";
+import { useNavigate } from "react-router";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: addTask, isPending, isError, error } = useAddTask();
   const { data: projects } = useProject();
+  const { data: tasks } = useTasks();
+  const [query, setQuery] = useState("");
+  const [notFound, setNotFound] = useState(false);
+  const navigate = useNavigate();
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key !== "Enter") return;
+
+    const trimmed = query.trim().toLowerCase();
+    if (!trimmed || !tasks) return;
+
+    const match = tasks.find((task: Task) =>
+      task.title.toLowerCase().includes(trimmed),
+    );
+
+    if (!match) {
+      setNotFound(true);
+      return;
+    }
+
+    setNotFound(false);
+    setQuery("");
+    navigate("/", { state: { highlightTaskId: match._id } });
+  }
 
   type ProjectChoices = {
     projId: string;
@@ -48,7 +73,16 @@ export default function Header() {
       <div className="header-wrapper">
         <div className="left-section">
           <SearchIcon size={15} strokeWidth={2} />
-          <input type="text" placeholder="Search tasks..." />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setNotFound(false);
+            }}
+            onKeyDown={handleKeyDown}
+            placeholder="Search tasks..."
+          />
         </div>
         <div className="right-section">
           <div className="add-wrapper">

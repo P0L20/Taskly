@@ -14,15 +14,40 @@ import {
 } from "@dnd-kit/core";
 import { useUpdateTask } from "../../hooks/useTasks";
 import { DragOverlay } from "@dnd-kit/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { type Task } from "../../types/Types";
 import TaskCard from "../Dashboard/TaskCard";
 import Stat from "./Stat";
 import { EditTaskModal } from "../../components/EditTaskModal";
+import { useLocation, useNavigate } from "react-router";
 
 export default function Dashboard() {
   const { data: tasks, isLoading, isError } = useTasksGroupedByStatus();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const state = location.state as { highlightTaskId?: string } | null;
+  const highlightedId = state?.highlightTaskId;
+
+  useEffect(() => {
+    if (!highlightedId || !tasks) return;
+
+    const el = document.getElementById(`task-${highlightedId}`);
+    if (!el) return;
+
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el.classList.add("task-highlight");
+
+    const timeout = setTimeout(
+      () => el.classList.remove("task-highlight"),
+      2000,
+    );
+
+    navigate(location.pathname, { replace: true, state: {} });
+
+    return () => clearTimeout(timeout);
+  }, [highlightedId, tasks, location.key]);
 
   const handleDragStart = (event: DragStartEvent) => {
     const allTasks = tasks ? Object.values(tasks).flat() : [];
@@ -64,8 +89,6 @@ export default function Dashboard() {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor),
   );
-
-  // console.log(tasks?.done);
 
   if (isLoading) return <p>Loading…</p>;
   if (isError) return <p>Couldn't load tasks.</p>;
