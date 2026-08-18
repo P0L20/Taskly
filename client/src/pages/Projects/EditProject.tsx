@@ -2,15 +2,17 @@ import { Ellipsis } from "lucide-react";
 import Modal from "../../components/Modal";
 import { useUpdateProject } from "../../hooks/useProject";
 import { useState } from "react";
-import type { Project } from "../../types/Types";
+import type { Project, Task } from "../../types/Types";
+import Popover from "./Popover";
 
 const HEX_COLOR = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
 
 type EditProps = {
   project: Project;
+  tasks: Task[];
 };
 
-export default function EditProject({ project }: EditProps) {
+export default function EditProject({ project, tasks }: EditProps) {
   const { mutate: updateProject, isPending, error } = useUpdateProject();
   const [isOpen, setIsOpen] = useState(false);
   const [color, setColor] = useState(project.color);
@@ -110,7 +112,7 @@ export default function EditProject({ project }: EditProps) {
 
           <div className="modal-actions">
             <span>
-              <button className="btn-delete">Delete</button>
+              <Popover project={project} tasks={tasks} />
             </span>
             <div className="right-btns">
               <button

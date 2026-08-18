@@ -85,7 +85,7 @@ export default function Projects() {
                 <div className="top-wrapper">
                   <div className="left-section">
                     <p className="project-name">{project.proj.name}</p>
-                    <EditProject project={project.proj} />
+                    <EditProject project={project.proj} tasks={project.tasks} />
                   </div>
                   <div className="right-section">
                     <span>

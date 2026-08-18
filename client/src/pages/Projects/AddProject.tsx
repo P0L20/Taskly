@@ -1,33 +1,77 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { useAddProject } from "../../hooks/useProject";
+import { useAddProject, useAddProjectAndTasks } from "../../hooks/useProject";
 import Modal from "../../components/Modal";
+import MultipleAddTask from "./MultipleAddTask";
 
 const HEX_COLOR = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
 
+type TaskRow = {
+  id: number;
+};
+
 export default function AddProject() {
-  const { mutate: addProject, isPending, error } = useAddProject();
+  const {
+    mutate: addProject,
+    isPending: isAddingProject,
+    error: addProjectError,
+  } = useAddProject();
+  const {
+    mutate: addProjectAndTasks,
+    isPending: isAddingProjectAndTasks,
+    error: addProjectAndTasksError,
+  } = useAddProjectAndTasks();
+
   const [isOpen, setIsOpen] = useState(false);
   const [color, setColor] = useState("#6366F1");
+  const [tasks, setTasks] = useState<TaskRow[]>([{ id: 1 }]);
 
+  const isPending = isAddingProject || isAddingProjectAndTasks;
+  const error = addProjectError || addProjectAndTasksError;
   const colorIsValid = HEX_COLOR.test(color);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    addProject(
-      {
-        name: formData.get("name") as string,
-        description: formData.get("description") as string,
-        color: formData.get("color") as string,
-      },
-      {
-        onSuccess: () => {
-          setIsOpen(false);
-          setColor("#6366F1");
-        },
-      },
-    );
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const project = {
+      name: formData.get("name") as string,
+      description: formData.get("description") as string,
+      color: formData.get("color") as string,
+    };
+
+    const titles = formData.getAll("task-title") as string[];
+    const descriptions = formData.getAll("task-description") as string[];
+    const dueDates = formData.getAll("task-dueDate") as string[];
+    const priorities = formData.getAll("task-priority") as string[];
+
+    const newTasks = titles
+      .map((title, i) => ({
+        title,
+        description: descriptions[i],
+        dueDate: dueDates[i],
+        priority: priorities[i] as "low" | "medium" | "high",
+      }))
+      .filter((task) => task.title.trim() !== "");
+
+    const onSettled = () => {
+      setIsOpen(false);
+      setColor("#6366F1");
+      setTasks([{ id: 1 }]);
+      form.reset();
+    };
+
+    console.log(newTasks);
+
+    if (newTasks.length > 0) {
+      addProjectAndTasks(
+        { project, tasks: newTasks },
+        { onSuccess: onSettled },
+      );
+    } else {
+      addProject(project, { onSuccess: onSettled });
+    }
   }
 
   return (
@@ -66,7 +110,10 @@ export default function AddProject() {
             />
           </div>
 
-          <div className="form-group">
+          <div
+            className="form-group"
+            style={{ borderBottom: "1px solid gray", paddingBottom: "20px" }}
+          >
             <label htmlFor="color">Color</label>
             <div className="color-field">
               <input
@@ -93,6 +140,10 @@ export default function AddProject() {
                 Enter a valid hex color, e.g. #3B82F6
               </span>
             )}
+          </div>
+
+          <div className="form-group">
+            <MultipleAddTask tasks={tasks} setTasks={setTasks} />
           </div>
 
           {error && (

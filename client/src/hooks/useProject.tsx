@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { Task } from "../types/Types";
 
 export function useProject() {
   return useQuery({
@@ -11,17 +12,80 @@ export function useProject() {
   });
 }
 
+interface NewProject {
+  name: string;
+  description?: string;
+  color: string;
+}
+
+interface NewTask {
+  title: string;
+  description?: string;
+  dueDate?: string;
+  priority: Task["priority"];
+}
+
 export function useAddProject() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (project) =>
-      fetch("http://localhost:3000/api/projects", {
+    mutationFn: async (project: NewProject) => {
+      const res = await fetch("http://localhost:3000/api/projects", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(project),
-      }).then((res) => res.json),
+      });
+      if (!res.ok) throw new Error(`Failed to create project: ${res.status}`);
+      return res.json();
+    },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["projects"] }),
+  });
+}
+
+export function useAddProjectAndTasks() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      project,
+      tasks,
+    }: {
+      project: NewProject;
+      tasks: NewTask[];
+    }) => {
+      const projectRes = await fetch("http://localhost:3000/api/projects", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(project),
+      });
+      if (!projectRes.ok) {
+        throw new Error(`Failed to create project: ${projectRes.status}`);
+      }
+      const newProject = await projectRes.json();
+
+      const taskResults = await Promise.all(
+        tasks.map((task) =>
+          fetch("http://localhost:3000/api/tasks", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...task, projectId: newProject._id }),
+          }),
+        ),
+      );
+
+      const failedTask = taskResults.find((res) => !res.ok);
+      if (failedTask) {
+        throw new Error(
+          `Project created, but a task failed to save: ${failedTask.status}`,
+        );
+      }
+
+      return newProject;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
   });
 }
 
