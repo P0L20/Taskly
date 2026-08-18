@@ -5,6 +5,7 @@ import { useAddTask, useTasks, type TaskInput } from "../hooks/useTasks";
 import { useProject } from "../hooks/useProject";
 import type { Project, Task } from "../types/Types";
 import { useNavigate } from "react-router";
+import { useSettings } from "../context/SettingsContext";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ export default function Header() {
   const { data: projects } = useProject();
   const { data: tasks } = useTasks();
   const [query, setQuery] = useState("");
+  const { defaultPriority } = useSettings();
   const [notFound, setNotFound] = useState(false);
   const navigate = useNavigate();
 
@@ -140,7 +142,7 @@ export default function Header() {
               <select
                 id="priority"
                 name="priority"
-                defaultValue="medium"
+                defaultValue={defaultPriority}
                 disabled={isPending}
               >
                 <option value="low">Low</option>

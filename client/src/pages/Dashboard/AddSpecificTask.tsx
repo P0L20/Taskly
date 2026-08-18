@@ -4,10 +4,12 @@ import { useState } from "react";
 import { useAddTask, type TaskInput } from "../../hooks/useTasks";
 import { useProject } from "../../hooks/useProject";
 import type { Project } from "../../types/Types";
+import { useSettings } from "../../context/SettingsContext";
 
 export default function AddSpecificTask({ status }) {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: addTask, isPending, isError, error } = useAddTask();
+  const { defaultPriority } = useSettings();
   const { data: projects } = useProject();
 
   type ProjectChoices = {
@@ -88,7 +90,7 @@ export default function AddSpecificTask({ status }) {
               <select
                 id="priority"
                 name="priority"
-                defaultValue="medium"
+                defaultValue={defaultPriority}
                 disabled={isPending}
               >
                 <option value="low">Low</option>

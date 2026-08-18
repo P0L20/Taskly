@@ -2,10 +2,12 @@ import { useState } from "react";
 import Modal from "../../components/Modal";
 import { useAddTask, type TaskInput } from "../../hooks/useTasks";
 import { PlusIcon } from "lucide-react";
+import { useSettings } from "../../context/SettingsContext";
 
 export default function AddTask({ project }) {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: addTask, isPending, isError, error } = useAddTask();
+  const { defaultPriority } = useSettings();
 
   const onClose = () => {
     setIsOpen(!isOpen);
@@ -80,7 +82,7 @@ export default function AddTask({ project }) {
               <select
                 id="priority"
                 name="priority"
-                defaultValue="medium"
+                defaultValue={defaultPriority}
                 disabled={isPending}
               >
                 <option value="low">Low</option>

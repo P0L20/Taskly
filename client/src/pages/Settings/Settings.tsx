@@ -1,9 +1,9 @@
 import { useSettings } from "../../context/SettingsContext";
 import "./Settings.css";
 
-const HEX_COLOR = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
+// const HEX_COLOR = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
 
-export const ACCENT_PRESETS = {
+const ACCENT_PRESETS = {
   violet: { primary: "#7c3aed", light: "#9061f9", bg: "#221b37" },
   blue: { primary: "#3b82f6", light: "#60a5fa", bg: "#1e293b" },
   rose: { primary: "#e11d48", light: "#fb7185", bg: "#3f1725" },
@@ -26,7 +26,7 @@ export default function Settings() {
     resetSettings,
   } = useSettings();
 
-  const colorIsValid = HEX_COLOR.test(accentColor);
+  // const colorIsValid = HEX_COLOR.test(accentColor);
 
   return (
     <div className="main-wrapper">

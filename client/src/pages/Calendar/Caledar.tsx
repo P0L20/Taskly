@@ -15,6 +15,7 @@ import type { Task } from "../../types/Types";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./Calendar.css";
 import SelectedTask from "./SelectedTask";
+import { useSettings } from "../../context/SettingsContext";
 
 const locales = { "en-US": enUS };
 
@@ -25,6 +26,14 @@ const localizer = dateFnsLocalizer({
   getDay,
   locales,
 });
+
+const settingsDefault = JSON.parse(
+  localStorage.getItem("task-planner-settings") || "month",
+);
+
+const calendarView = settingsDefault.defaultCalendarView || "month";
+
+console.log(calendarView);
 
 interface TaskEvent extends Event {
   resource: Task;
@@ -38,7 +47,8 @@ const PRIORITY_COLORS: Record<Task["priority"], string> = {
 
 export default function CalendarPage() {
   const { data: tasks, isLoading, isError } = useTasks();
-  const [view, setView] = useState<View>("month");
+  const { defaultCalendarView } = useSettings();
+  const [view, setView] = useState<View>(defaultCalendarView);
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -129,9 +139,6 @@ export default function CalendarPage() {
             eventPropGetter={eventPropGetter}
             views={["month", "week", "agenda"]}
             selectable="ignoreEvents"
-            // onSelectEvent={(event) =>
-            //   setSelectedTask((event as TaskEvent).resource)
-            // }
             onSelectSlot={handleSelectSlot}
             style={{ height: 750 }}
             dayPropGetter={(date) => {

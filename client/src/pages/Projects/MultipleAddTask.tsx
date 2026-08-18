@@ -1,5 +1,6 @@
 import { CircleX, PlusIcon } from "lucide-react";
 import { useRef } from "react";
+import { useSettings } from "../../context/SettingsContext";
 
 type Task = {
   id: number;
@@ -12,6 +13,7 @@ type MultipleProps = {
 
 export default function MultipleAddTask({ tasks, setTasks }: MultipleProps) {
   const nextId = useRef(2);
+  const { defaultPriority } = useSettings();
 
   const handleAddTask = () => {
     setTasks((prev) => [...prev, { id: nextId.current++ }]);
@@ -49,7 +51,7 @@ export default function MultipleAddTask({ tasks, setTasks }: MultipleProps) {
                 id="priority"
                 required
                 name="task-priority"
-                defaultValue="medium"
+                defaultValue={defaultPriority}
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>

@@ -6,6 +6,7 @@ import type { Project, Task } from "../types/Types";
 import { useQueryClient } from "@tanstack/react-query";
 import DeleteModal from "./DeleteModal";
 import { useState } from "react";
+import { useSettings } from "../context/SettingsContext";
 
 export function EditTaskModal() {
   const { editingId, isOpen, closeEdit } = useTaskEdit();
@@ -13,6 +14,7 @@ export function EditTaskModal() {
   const updateTask = useUpdateTask();
   const queryClient = useQueryClient();
   const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const { defaultPriority } = useSettings();
   const [selectedTaskDelete, setSelectedTaskDelete] = useState<string[]>([]);
 
   type ProjectChoices = {
@@ -111,7 +113,7 @@ export function EditTaskModal() {
               <select
                 id="priority"
                 name="priority"
-                defaultValue={task?.priority ?? "medium"}
+                defaultValue={task?.priority ?? defaultPriority}
                 disabled={updateTask.isPending}
               >
                 <option value="low">Low</option>

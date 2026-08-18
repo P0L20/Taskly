@@ -121,7 +121,7 @@ export default function Dashboard() {
     <div className="main-wrapper">
       <div className="page-desc">
         <h1>Dashboard</h1>
-        <p className="intro">Good morning — here's what's happening today.</p>
+        <p className="intro">Good day — here's what's happening today.</p>
         <div className="dashboard-legend">
           {legend.map((legend) => (
             <span key={legend.name} className="legend">
