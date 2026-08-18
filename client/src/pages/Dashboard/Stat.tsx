@@ -47,7 +47,7 @@ export default function Stat({ tasksGrouped }: PropStat) {
 
       <div className="percentage-wrapper">
         <div className="top-section">
-          <p style={{ color: "white" }}>Overall Progress</p>
+          <p style={{ color: "var(--text-primary)" }}>Overall Progress</p>
           <p className="text-percent" style={{ color: "var(--color-primary)" }}>
             {percent}
           </p>

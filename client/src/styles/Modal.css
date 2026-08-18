@@ -15,7 +15,7 @@
 
 /* The actual modal card */
 .modal-content {
-  background: #13131a;
+  background: var(--bg-main);
   padding: 2rem;
   border-radius: 12px;
   max-width: 500px;
@@ -134,7 +134,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .btn-secondary {
   background-color: transparent;
   border: 1px solid var(--border-color);
-  color: var(--text-secondary);
+  color: var(--text-primary);
   padding: 0.625rem 1.25rem;
   border-radius: 8px;
   font-weight: 500;
@@ -143,8 +143,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .btn-secondary:hover {
-  background-color: var(--bg-card-hover);
-  color: var(--text-primary);
+  opacity: .5;
 }
 
 .btn-primary {
@@ -169,7 +168,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .modal-actions .btn-delete {
   height: 100%;
   background-color: var(--color-danger);
-  color: var(--text-primary);
+  color: white;
   padding: 0.625rem 1.25rem;
   border-radius: 8px;
   border: none;

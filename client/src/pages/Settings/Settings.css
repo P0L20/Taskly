@@ -1,0 +1,143 @@
+.settings-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.settings-section h2 {
+  margin: 0 0 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 0;
+}
+
+.settings-row + .settings-row {
+  border-top: 1px solid var(--border-color);
+}
+
+.settings-row label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.settings-hint {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* theme toggle — segmented control */
+.theme-toggle {
+  display: inline-flex;
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.theme-toggle button {
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.theme-toggle button:hover {
+  color: var(--text-primary);
+}
+
+.theme-toggle button.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* accent swatches */
+.accent-picker {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.accent-picker .swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.accent-picker .swatch:hover {
+  transform: scale(1.1);
+}
+
+.accent-picker .swatch.selected {
+  border-color: var(--text-primary);
+}
+
+.accent-picker .swatch.selected::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+}
+
+/* defaults section */
+.settings-row select {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.settings-row select:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 4px;
+}
+
+@media (max-width: 480px) {
+  .settings-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle button,
+  .accent-picker .swatch {
+    transition: none;
+  }
+}
