@@ -1,4 +1,4 @@
-import { PlusIcon, SearchIcon, User } from "lucide-react";
+import { Menu, PlusIcon, SearchIcon, User } from "lucide-react";
 import Modal from "./Modal";
 import { useState } from "react";
 import { useAddTask, useTasks, type TaskInput } from "../hooks/useTasks";
@@ -7,7 +7,7 @@ import type { Project, Task } from "../types/Types";
 import { useNavigate } from "react-router";
 import { useSettings } from "../context/SettingsContext";
 
-export default function Header() {
+export default function Header({ onMenuClick }) {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: addTask, isPending, isError, error } = useAddTask();
   const { data: projects } = useProject();
@@ -29,6 +29,7 @@ export default function Header() {
 
     if (!match) {
       setNotFound(true);
+      setQuery("");
       return;
     }
 
@@ -74,17 +75,26 @@ export default function Header() {
     <div className="header">
       <div className="header-wrapper">
         <div className="left-section">
-          <SearchIcon size={15} strokeWidth={2} />
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setNotFound(false);
-            }}
-            onKeyDown={handleKeyDown}
-            placeholder="Search tasks..."
-          />
+          <button
+            className="menu-toggle"
+            onClick={onMenuClick}
+            aria-label="Open menu"
+          >
+            <Menu size={20} />
+          </button>
+          <div className="search-bar">
+            <SearchIcon size={15} strokeWidth={2} />
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setNotFound(false);
+              }}
+              onKeyDown={handleKeyDown}
+              placeholder="Search tasks..."
+            />
+          </div>
         </div>
         <div className="right-section">
           <div className="add-wrapper">

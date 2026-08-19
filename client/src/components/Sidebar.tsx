@@ -4,10 +4,18 @@ import {
   CalendarDays,
   FolderOpen,
   Settings,
+  ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
 import logo from "../assets/logo-main.png";
 
-export default function SideBar() {
+type SidebarProps = {
+  onClose: () => void;
+  isOpen: boolean;
+  isCollapse: boolean;
+};
+
+export default function SideBar({ onClose, isOpen, isCollapse }: SidebarProps) {
   const navBars = [
     {
       to: "/",
@@ -32,13 +40,20 @@ export default function SideBar() {
   ];
 
   return (
-    <div className="nav-links-container sidebar">
+    <div className={`nav-links-container sidebar ${isOpen ? "open" : ""}`}>
       <div className="top-wrapper">
         <div className="top-section">
           <div className="logo-wrapper">
             <img className="logo" src={logo} alt="logo" />
           </div>
-          <p>Taskly</p>
+          <p className="name-web">Taskly</p>
+          <button className="collapse-sidebar" onClick={onClose}>
+            {isCollapse ? (
+              <ChevronRight size={20} />
+            ) : (
+              <ChevronLeft size={20} />
+            )}
+          </button>
         </div>
 
         <nav className="nav-links">

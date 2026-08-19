@@ -12,6 +12,13 @@
   justify-content: center;
 }
 
+.project-list .title {
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .project-container .project-wrapper {
   height: fit-content;
   display: grid;
@@ -138,6 +145,8 @@
 .tasks-project .task {
   display: grid;
   grid-template-columns: 2fr 2fr;
+  align-items: center;
+  justify-content: center;
   transition: .3s ease;
   padding: 10px;
   border-radius: 10px;
@@ -154,6 +163,11 @@
 .tasks-project .task :where(.right-container, .left-container) {
   display: flex;
   gap: 10px;
+  align-items: center;
+}
+
+.tasks-project .task :where(.right-container, .left-container) span {
+  display: flex;
   align-items: center;
 }
 
@@ -222,6 +236,15 @@
   align-items: center;
   flex-direction: row;
   gap: 8px;
+}
+
+.add-multiple-task svg {
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+.add-multiple-task svg:hover {
+  color: var(--color-primary);
 }
 
 .new-task-container > svg {
