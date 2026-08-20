@@ -27,20 +27,20 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-const savedSettings = localStorage.getItem("task-planner-settings");
+// const savedSettings = localStorage.getItem("task-planner-settings");
 
-const settingsDefault = savedSettings
-  ? JSON.parse(savedSettings)
-  : {
-      theme: "light",
-      accentColor: "#6366F1",
-      defaultCalendarView: "month",
-      defaultPriority: "medium",
-    };
+// const settingsDefault = savedSettings
+//   ? JSON.parse(savedSettings)
+//   : {
+//       theme: "light",
+//       accentColor: "#6366F1",
+//       defaultCalendarView: "month",
+//       defaultPriority: "medium",
+//     };
 
-const calendarView = settingsDefault.defaultCalendarView || "month";
+// const calendarView = settingsDefault.defaultCalendarView || "month";
 
-console.log(calendarView);
+// // console.log(calendarView);
 
 interface TaskEvent extends Event {
   resource: Task;
