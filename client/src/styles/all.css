@@ -144,6 +144,10 @@ ul {
   list-style: none;
 }
 
+h1 {
+  color: var(--text-primary);
+}
+
 .sidebar {
   background: var(--bg-card);
   color: var(--text-primary);

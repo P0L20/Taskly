@@ -6,7 +6,11 @@ import { useProject } from "../../hooks/useProject";
 import type { Project } from "../../types/Types";
 import { useSettings } from "../../context/SettingsContext";
 
-export default function AddSpecificTask({ status }) {
+type SpecificProps = {
+  status: string;
+};
+
+export default function AddSpecificTask({ status }: SpecificProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: addTask, isPending, isError, error } = useAddTask();
   const { defaultPriority } = useSettings();
@@ -29,7 +33,9 @@ export default function AddSpecificTask({ status }) {
     const data: TaskInput = {
       ...rawData,
       status,
-      projectId: rawData.projectId || null,
+      projectId: (rawData.projectId as string) || null,
+      title: rawData.title as string,
+      priority: rawData.priority as string,
     };
 
     console.log(data);

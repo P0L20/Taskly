@@ -46,7 +46,10 @@
 
 .taskcard-container .wrapper .name {
   font-weight: 600;
+  width: 50%;
   color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .block-task .block-desc {

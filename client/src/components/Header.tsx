@@ -1,13 +1,17 @@
 import { Menu, PlusIcon, SearchIcon, User } from "lucide-react";
 import Modal from "./Modal";
 import { useState } from "react";
-import { useAddTask, useTasks, type TaskInput } from "../hooks/useTasks";
+import { useAddTask, useTasks } from "../hooks/useTasks";
 import { useProject } from "../hooks/useProject";
 import type { Project, Task } from "../types/Types";
 import { useNavigate } from "react-router";
 import { useSettings } from "../context/SettingsContext";
 
-export default function Header({ onMenuClick }) {
+interface HeaderProps {
+  onMenuClick: () => void;
+}
+
+export default function Header({ onMenuClick }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: addTask, isPending, isError, error } = useAddTask();
   const { data: projects } = useProject();
@@ -27,7 +31,7 @@ export default function Header({ onMenuClick }) {
       task.title.toLowerCase().includes(trimmed),
     );
 
-    if (!match) {
+    if (notFound) {
       setNotFound(true);
       setQuery("");
       return;
@@ -56,10 +60,13 @@ export default function Header({ onMenuClick }) {
     const formData = new FormData(e.currentTarget);
 
     const rawData = Object.fromEntries(formData.entries());
+    const id = rawData.projectId;
 
-    const data: TaskInput = {
+    const data = {
       ...rawData,
-      projectId: rawData.projectId || null,
+      projectId: (id as string) || null,
+      title: rawData.title as string,
+      priority: rawData.priority as string,
     };
 
     console.log(data);

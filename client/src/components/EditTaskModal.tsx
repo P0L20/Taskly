@@ -58,9 +58,10 @@ export function EditTaskModal() {
     );
   }
 
-  function handleDelete(id: string[]) {
+  function handleDelete(id: string) {
     setIsOpenDelete(true);
-    setSelectedTaskDelete(id);
+    setSelectedTaskDelete((prev) => [...prev, id]);
+    console.log(selectedTaskDelete);
   }
 
   return (
@@ -171,7 +172,9 @@ export function EditTaskModal() {
           <div className="modal-actions">
             <button
               className="btn-delete"
-              onClick={() => handleDelete(task?._id)}
+              onClick={() => {
+                if (task?._id) handleDelete(task._id);
+              }}
             >
               Delete
             </button>

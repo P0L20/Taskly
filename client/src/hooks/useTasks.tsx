@@ -70,7 +70,7 @@ export type TaskInput = {
 export function useAddTask() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (task) =>
+    mutationFn: (task: TaskInput) =>
       fetch("http://localhost:3000/api/tasks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

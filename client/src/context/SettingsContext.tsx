@@ -10,9 +10,19 @@ type Theme = "light" | "dark";
 type CalendarView = "month" | "week" | "agenda";
 type Priority = "low" | "medium" | "high";
 
+const ACCENT_PRESETS = {
+  violet: { primary: "#7c3aed", light: "#9061f9", bg: "#221b37" },
+  blue: { primary: "#3b82f6", light: "#60a5fa", bg: "#1e293b" },
+  rose: { primary: "#e11d48", light: "#fb7185", bg: "#3f1725" },
+  emerald: { primary: "#10b981", light: "#34d399", bg: "#132e28" },
+  amber: { primary: "#f59e0b", light: "#fbbf24", bg: "#3a2a0f" },
+} as const;
+
+type AccentColor = keyof typeof ACCENT_PRESETS;
+
 interface Settings {
   theme: Theme;
-  accentColor: string;
+  accentColor: AccentColor;
   defaultCalendarView: CalendarView;
   defaultPriority: Priority;
 }
@@ -41,7 +51,7 @@ function loadSettings(): Settings {
 
 interface SettingsContextValue extends Settings {
   setTheme: (theme: Theme) => void;
-  setAccentColor: (color: string) => void;
+  setAccentColor: (color: AccentColor) => void;
   setDefaultCalendarView: (view: CalendarView) => void;
   setDefaultPriority: (priority: Priority) => void;
   resetSettings: () => void;
@@ -51,14 +61,6 @@ const SettingsContext = createContext<SettingsContextValue | null>(null);
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<Settings>(loadSettings);
-
-  const ACCENT_PRESETS = {
-    violet: { primary: "#7c3aed", light: "#9061f9", bg: "#221b37" },
-    blue: { primary: "#3b82f6", light: "#60a5fa", bg: "#1e293b" },
-    rose: { primary: "#e11d48", light: "#fb7185", bg: "#3f1725" },
-    emerald: { primary: "#10b981", light: "#34d399", bg: "#132e28" },
-    amber: { primary: "#f59e0b", light: "#fbbf24", bg: "#3a2a0f" },
-  } as const;
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
