@@ -39,6 +39,7 @@ const STORAGE_KEY = "task-planner-settings";
 function loadSettings(): Settings {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
+    console.log(raw);
     if (raw) return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
   } catch {
     // malformed storage — fall through to defaults

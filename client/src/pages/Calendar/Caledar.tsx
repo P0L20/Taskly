@@ -27,9 +27,16 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-const settingsDefault = JSON.parse(
-  localStorage.getItem("task-planner-settings") || "month",
-);
+const savedSettings = localStorage.getItem("task-planner-settings");
+
+const settingsDefault = savedSettings
+  ? JSON.parse(savedSettings)
+  : {
+      theme: "light",
+      accentColor: "#6366F1",
+      defaultCalendarView: "month",
+      defaultPriority: "medium",
+    };
 
 const calendarView = settingsDefault.defaultCalendarView || "month";
 
