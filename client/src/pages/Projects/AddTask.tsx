@@ -3,11 +3,17 @@ import Modal from "../../components/Modal";
 import { useAddTask, type TaskInput } from "../../hooks/useTasks";
 import { PlusIcon } from "lucide-react";
 import { useSettings } from "../../context/SettingsContext";
+import type { Project } from "../../types/Types";
 
-export default function AddTask({ project }) {
+type AddProps = {
+  project: Project;
+};
+
+export default function AddTask({ project }: AddProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: addTask, isPending, isError, error } = useAddTask();
   const { defaultPriority } = useSettings();
+  console.log(project);
 
   const onClose = () => {
     setIsOpen(!isOpen);
@@ -21,7 +27,7 @@ export default function AddTask({ project }) {
 
     const data: TaskInput = {
       ...rawData,
-      projectId: project._id,
+      projectId: project._id as string,
     };
 
     console.log(data);

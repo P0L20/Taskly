@@ -5,7 +5,7 @@ import TaskColumn from "./TaskColumn";
 import {
   DndContext,
   type DragStartEvent,
-  type DragOverEvent,
+  // type DragOverEvent,
   type DragEndEvent,
   useSensors,
   useSensor,
@@ -55,13 +55,13 @@ export default function Dashboard() {
     setActiveTask(task ?? null);
   };
 
-  const handleDragOver = (event: DragOverEvent) => {
-    const { active, over } = event;
+  // const handleDragOver = (event: DragOverEvent) => {
+  //   const { active, over } = event;
 
-    if (!over) return;
+  //   if (!over) return;
 
-    // console.log("Dragging", active.id, "over", over.id);
-  };
+  //   console.log("Dragging", active.id, "over", over.id);
+  // };
 
   const updateTask = useUpdateTask();
 
@@ -137,7 +137,7 @@ export default function Dashboard() {
       <div className="tasks-container">
         <DndContext
           onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
+          //onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
           sensors={sensors}
         >

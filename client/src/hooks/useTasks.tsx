@@ -59,10 +59,10 @@ export function useProjectTasks() {
 export type Priority = "low" | "medium" | "high";
 
 export type TaskInput = {
-  title: string;
+  title?: string;
   description?: string;
   dueDate?: string;
-  priority: Priority | string;
+  priority?: Priority | string;
   projectId: string | null;
   status?: string;
 };
