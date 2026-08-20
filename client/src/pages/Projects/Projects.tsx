@@ -24,6 +24,10 @@ type ProjectGroupedTask = {
   doneCount: number;
 };
 
+const frontendUrl = import.meta.env.VITE_FRONTEND_URL;
+
+console.log(frontendUrl);
+
 export default function Projects() {
   const { data: projects, isLoading, isError } = useProject();
   const { data: tasks } = useTasksGroupedByProject();

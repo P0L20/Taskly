@@ -1,11 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Task } from "../types/Types";
 
+const frontendUrl = import.meta.env.VITE_FRONTEND_URL;
+
 export function useProject() {
   return useQuery({
     queryKey: ["projects"],
     queryFn: () =>
-      fetch("http://localhost:3000/api/projects").then((res) => {
+      fetch(`${frontendUrl}/api/projects`).then((res) => {
         if (!res.ok) throw new Error(`Failed to fetch projects: ${res.status}`);
         return res.json();
       }),
@@ -30,7 +32,7 @@ export function useAddProject() {
 
   return useMutation({
     mutationFn: async (project: NewProject) => {
-      const res = await fetch("http://localhost:3000/api/projects", {
+      const res = await fetch(`${frontendUrl}/api/projects`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(project),
@@ -53,7 +55,7 @@ export function useAddProjectAndTasks() {
       project: NewProject;
       tasks: NewTask[];
     }) => {
-      const projectRes = await fetch("http://localhost:3000/api/projects", {
+      const projectRes = await fetch(`${frontendUrl}/api/projects`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(project),
@@ -65,7 +67,7 @@ export function useAddProjectAndTasks() {
 
       const taskResults = await Promise.all(
         tasks.map((task) =>
-          fetch("http://localhost:3000/api/tasks", {
+          fetch(`${frontendUrl}/api/tasks`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ ...task, projectId: newProject._id }),
@@ -101,7 +103,7 @@ export function useUpdateProject() {
       description?: string;
       color?: string;
     }) => {
-      const res = await fetch(`http://localhost:3000/api/projects/${id}`, {
+      const res = await fetch(`${frontendUrl}/api/projects/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updates),
@@ -117,7 +119,7 @@ export function useDeleteProject() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const res = await fetch(`http://localhost:3000/api/projects/${id}`, {
+      const res = await fetch(`${frontendUrl}/api/projects/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error(`Failed to delete project: ${res.status}`);
@@ -134,10 +136,9 @@ export function useDeleteProjectAndTasks() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const res = await fetch(
-        `http://localhost:3000/api/projects/${id}/cascade`,
-        { method: "DELETE" },
-      );
+      const res = await fetch(`${frontendUrl}/api/projects/${id}/cascade`, {
+        method: "DELETE",
+      });
       if (!res.ok) throw new Error(`Failed to delete project: ${res.status}`);
       return res.json();
     },

@@ -1,8 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Task } from "../types/Types";
 
+const frontendUrl = import.meta.env.VITE_FRONTEND_URL;
+
 async function fetchTasks(): Promise<Task[]> {
-  const res = await fetch("http://localhost:3000/api/tasks");
+  const res = await fetch(`${frontendUrl}/api/tasks`);
   if (!res.ok) throw new Error(`Failed to fetch tasks: ${res.status}`);
   return res.json();
 }
@@ -11,7 +13,7 @@ export function useTasks() {
   return useQuery({
     queryKey: ["tasks"],
     queryFn: () =>
-      fetch("http://localhost:3000/api/tasks").then((res) => {
+      fetch(`${frontendUrl}/api/tasks`).then((res) => {
         if (!res.ok) throw new Error(`Failed to fetch tasks: ${res.status}`);
         return res.json();
       }),
@@ -71,7 +73,7 @@ export function useAddTask() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (task: TaskInput) =>
-      fetch("http://localhost:3000/api/tasks", {
+      fetch(`${frontendUrl}/api/tasks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(task),
@@ -95,7 +97,7 @@ export function useUpdateTask() {
     { previousTasks?: Task[]; previousGrouped?: TaskGroups }
   >({
     mutationFn: ({ id, ...updates }) =>
-      fetch(`http://localhost:3000/api/tasks/${id}`, {
+      fetch(`${frontendUrl}/api/tasks/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updates),
@@ -167,7 +169,7 @@ export function useDeleteTasks() {
     mutationFn: async (ids) => {
       const results = await Promise.all(
         ids.map((id) =>
-          fetch(`http://localhost:3000/api/tasks/${id}`, {
+          fetch(`${frontendUrl}/api/tasks/${id}`, {
             method: "DELETE",
           }),
         ),
